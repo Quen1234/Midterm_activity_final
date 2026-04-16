@@ -34,3 +34,7 @@ $routes->get('/users/delete/(:num)', 'UserController::delete/$1');  // Deletes u
 $routes->get('listahan', 'Listahan::index');
 $routes->post('listahan/store', 'Listahan::store');
 $routes->get('listahan/delete/(:num)', 'Listahan::delete/$1');
+$routes->get('inventory', 'Inventory::index');
+$routes->get('inventory/add', 'Inventory::add');
+$routes->post('inventory/store', 'Inventory::store');
+$routes->get('inventory/delete/(:num)', 'Inventory::delete/$1');

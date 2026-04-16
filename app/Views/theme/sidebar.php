@@ -5,8 +5,12 @@
     <a href="<?= base_url('users') ?>"><i class="bi bi-people me-2"></i> User Management</a>
     
     <!-- Future Modules -->
-    <a href="<?= base_url('listahan') ?>" class="nav-link">
-    <i class="bi bi-book"></i> Digital Listahan
-</a>
-    <a href="#"><i class="bi bi-box me-2"></i> Inventory</a>
+<!-- Future Modules -->
+<a href="<?= base_url('listahan') ?>" class="nav-link">
+        <i class="bi bi-book me-2"></i> Digital Listahan
+    </a>
+
+    <a href="<?= base_url('inventory') ?>" class="nav-link">
+        <i class="bi bi-box-seam me-2"></i> Inventory
+    </a>
 </div>
