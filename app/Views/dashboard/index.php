@@ -2,7 +2,7 @@
 
 <?= $this->section('content') ?>
     <h2>Dashboard</h2>
-    <p>Welcome to Nanay Livy's POS System. Use the sidebar to navigate to User Management, Inventory, or the Digital Listahan.</p>
+    <p>Welcome to Nanay Livy's POS System.</p>
     
     <div class="row mt-4">
         <div class="col-md-4">
@@ -17,7 +17,7 @@
             <div class="card text-white bg-warning mb-3">
                 <div class="card-body">
                     <h5 class="card-title">Active Utang (Listahan)</h5>
-                    <p class="card-text h3">0</p>
+                    <p class="card-text h3"><?php echo $active_utang_count; ?></p>
                 </div>
             </div>
         </div>
