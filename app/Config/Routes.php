@@ -31,3 +31,6 @@ $routes->post('/users/store', 'UserController::store');          // Saves new us
 $routes->get('/users/edit/(:num)', 'UserController::edit/$1');   // Shows "Edit User" form based on ID
 $routes->post('/users/update/(:num)', 'UserController::update/$1'); // Updates user in DB based on ID
 $routes->get('/users/delete/(:num)', 'UserController::delete/$1');  // Deletes user from DB based on ID
+$routes->get('listahan', 'Listahan::index');
+$routes->post('listahan/store', 'Listahan::store');
+$routes->get('listahan/delete/(:num)', 'Listahan::delete/$1');
