@@ -215,6 +215,11 @@
                 <i class="fas fa-fingerprint"></i> Activity Logs
             </a>
             <?php endif; ?>
+
+            <div class="nav-header">Exit</div>
+            <a href="<?= base_url('logout') ?>" class="nav-link text-danger">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
         </nav>
     </aside>
 

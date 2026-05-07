@@ -13,4 +13,8 @@
     <a href="<?= base_url('inventory') ?>" class="nav-link">
         <i class="bi bi-box-seam me-2"></i> Inventory
     </a>
+
+    <a href="<?= base_url('logout') ?>" class="nav-link text-danger mt-auto">
+        <i class="bi bi-box-arrow-right me-2"></i> Logout
+    </a>
 </div>

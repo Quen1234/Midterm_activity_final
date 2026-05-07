@@ -243,7 +243,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <span class="text-white-50 small text-uppercase d-block mb-2">Average Debt</span>
-                        <h2 class="fw-bold text-white mb-0">₱ <?= number_format(array_sum(array_column($listahan, 'amount') ?? []) / max(1, count($listahan ?? [])), 2) ?></h2>
+                        <h2 class="fw-bold text-white mb-0">₱ <?= number_format(array_sum(array_column($listahan ?: [], 'amount') ?: []) / max(1, count($listahan ?: [])), 2) ?></h2>
                     </div>
                     <div class="bg-white bg-opacity-10 rounded-3 p-3">
                         <i class="bi bi-graph-up fs-1 text-white opacity-75"></i>
@@ -257,7 +257,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <span class="text-white-50 small text-uppercase d-block mb-2">Highest Debt</span>
-                        <h2 class="fw-bold text-white mb-0">₱ <?= number_format(max(array_column($listahan, 'amount') ?? [0]), 2) ?></h2>
+                        <h2 class="fw-bold text-white mb-0">₱ <?= number_format(max(array_column($listahan ?: [], 'amount') ?: [0]), 2) ?></h2>
                     </div>
                     <div class="bg-white bg-opacity-10 rounded-3 p-3">
                         <i class="bi bi-trophy fs-1 text-white opacity-75"></i>
@@ -309,11 +309,21 @@
                             </td>
                             <td class="text-muted small"><?= date('M d, Y', strtotime($item['created_at'])) ?></td>
                             <td class="text-end pe-4">
-                                <button class="btn btn-sm btn-outline-danger rounded-pill px-3 delete-btn" 
-                                        data-id="<?= $item['id'] ?>"
-                                        data-name="<?= esc($item['customer_name']) ?>">
-                                    <i class="bi bi-check2-circle me-1"></i> Settle
-                                </button>
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button class="btn btn-sm btn-outline-primary rounded-pill px-3 view-receipt-btn" 
+                                            data-id="<?= $item['id'] ?>"
+                                            data-name="<?= esc($item['customer_name']) ?>"
+                                            data-items="<?= esc($item['items'] ?? '') ?>"
+                                            data-amount="<?= $item['amount'] ?>"
+                                            data-date="<?= date('M d, Y h:i A', strtotime($item['created_at'])) ?>">
+                                        <i class="bi bi-receipt me-1"></i> Receipt
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger rounded-pill px-3 settle-btn" 
+                                            data-id="<?= $item['id'] ?>"
+                                            data-name="<?= esc($item['customer_name']) ?>">
+                                        <i class="bi bi-check2-circle me-1"></i> Settle
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -411,6 +421,81 @@
     </div>
 </div>
 
+<!-- Receipt Modal -->
+<div class="modal fade" id="receiptModal" tabindex="-1" aria-labelledby="receiptModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+            <div class="modal-body p-0">
+                <div class="receipt-container bg-white p-4" id="printableReceipt">
+                    <div class="text-center mb-4">
+                        <h5 class="fw-bold mb-0">NANAY LIVY'S STORE</h5>
+                        <small class="text-muted">Brgy. Receipt, City Hall</small>
+                        <hr class="my-3 border-dashed">
+                    </div>
+                    
+                    <div id="receiptItems">
+                        <!-- Items will be injected here -->
+                    </div>
+
+                    <hr class="my-3 border-dashed">
+                    
+                    <div class="d-flex justify-content-between mb-3">
+                        <h5 class="fw-bold mb-0">TOTAL DUE</h5>
+                        <h5 class="fw-bold mb-0 text-primary" id="receiptTotal">₱0.00</h5>
+                    </div>
+
+                    <div id="receiptPaymentDetails" class="bg-light p-2 rounded-3 small mb-4">
+                        <div class="d-flex justify-content-between">
+                            <span>Customer:</span>
+                            <span class="fw-bold" id="receiptCustomerName"></span>
+                        </div>
+                        <div class="d-flex justify-content-between mt-1">
+                            <span>Status:</span>
+                            <span class="fw-bold text-danger">UNPAID (UTANG)</span>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <small class="text-muted">This is a record of credit.</small><br>
+                        <small class="text-muted" id="receiptDate"></small>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0 p-3 bg-light">
+                <button type="button" class="btn btn-secondary w-100 rounded-3 fw-bold mb-2" onclick="window.print()">
+                    <i class="bi bi-printer me-2"></i> Print Receipt
+                </button>
+                <button type="button" class="btn btn-primary w-100 rounded-3 fw-bold" data-bs-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .border-dashed {
+        border-top: 1px dashed #dee2e6;
+    }
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+        #printableReceipt, #printableReceipt * {
+            visibility: visible;
+        }
+        #printableReceipt {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+        }
+        .modal-footer {
+            display: none;
+        }
+    }
+</style>
+
 <script>
 // Search functionality
 document.getElementById('searchInput')?.addEventListener('keyup', function() {
@@ -422,8 +507,40 @@ document.getElementById('searchInput')?.addEventListener('keyup', function() {
     });
 });
 
+// View Receipt functionality
+document.querySelectorAll('.view-receipt-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const name = this.getAttribute('data-name');
+        const items = this.getAttribute('data-items');
+        const amount = this.getAttribute('data-amount');
+        const date = this.getAttribute('data-date');
+
+        document.getElementById('receiptCustomerName').innerText = name;
+        document.getElementById('receiptTotal').innerText = '₱' + parseFloat(amount).toLocaleString(undefined, {minimumFractionDigits: 2});
+        document.getElementById('receiptDate').innerText = date;
+
+        const itemsContainer = document.getElementById('receiptItems');
+        itemsContainer.innerHTML = '';
+        
+        // Split items by comma and display them
+        if (items) {
+            const itemsList = items.split(',');
+            itemsList.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'd-flex justify-content-between mb-1 small';
+                div.innerHTML = `<span>${item.trim()}</span>`;
+                itemsContainer.appendChild(div);
+            });
+        } else {
+            itemsContainer.innerHTML = '<div class="text-center text-muted small">No items listed</div>';
+        }
+
+        new bootstrap.Modal(document.getElementById('receiptModal')).show();
+    });
+});
+
 // Settlement confirmation
-document.querySelectorAll('.delete-btn').forEach(btn => {
+document.querySelectorAll('.settle-btn').forEach(btn => {
     btn.addEventListener('click', function() {
         let id = this.getAttribute('data-id');
         let name = this.getAttribute('data-name');

@@ -21,6 +21,16 @@ $routes->post('/auth/registerProcess', 'Auth::registerProcess'); // Handles regi
 // Dashboard Route
 // ==========================================
 $routes->get('/dashboard', 'Dashboard::index');              // Shows the main dashboard
+$routes->get('/pos', 'Pos::index');                          // Shows the POS page
+$routes->post('/pos/checkout', 'Pos::checkout');           // Processes POS checkout
+$routes->get('/categories', 'Categories::index');            // Lists all categories
+$routes->post('/categories/store', 'Categories::store');        // Stores new category
+$routes->post('/categories/update/(:num)', 'Categories::update/$1'); // Updates category
+$routes->post('/categories/delete/(:num)', 'Categories::delete/$1'); // Deletes category
+
+$routes->get('/stock', 'Stock::index');                      // Placeholder
+$routes->get('/reports', 'Reports::index');                  // Placeholder
+$routes->get('/audit', 'Audit::index');                      // Placeholder
 
 // ==========================================
 // User Management (CRUD) Routes
