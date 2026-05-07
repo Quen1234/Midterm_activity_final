@@ -97,9 +97,9 @@
                     <i class="fas fa-wallet"></i>
                 </div>
                 <span class="stat-label">Today's Revenue</span>
-                <div class="stat-value">₱ 0.00</div>
+                <div class="stat-value">₱ <?= number_format($today_revenue, 2); ?></div>
                 <div class="stat-trend text-success">
-                    <i class="fas fa-arrow-up me-1"></i> 0% <span class="text-muted fw-normal">vs yesterday</span>
+                    <i class="fas fa-arrow-up me-1"></i> Live <span class="text-muted fw-normal">from transactions</span>
                 </div>
             </div>
         </div>
@@ -123,9 +123,9 @@
                     <i class="fas fa-exclamation-triangle"></i>
                 </div>
                 <span class="stat-label">Low Stock Alerts</span>
-                <div class="stat-value">0</div>
+                <div class="stat-value"><?= $low_stock_count; ?></div>
                 <div class="stat-trend text-danger">
-                    <i class="fas fa-sync-alt me-1"></i> Check Inventory
+                    <i class="fas fa-sync-alt me-1"></i> <a href="<?= base_url('stock') ?>" class="text-danger text-decoration-none">Check Inventory</a>
                 </div>
             </div>
         </div>

@@ -245,7 +245,7 @@
                 <div class="row g-4" id="productList">
                     <?php if(!empty($products)): ?>
                         <?php foreach($products as $product): ?>
-                            <div class="col-xl-4 col-md-6 product-item" data-name="<?= strtolower($product['item_name']) ?>">
+                            <div class="col-xl-4 col-md-6 product-item" data-name="<?= strtolower($product['item_name']) ?>" data-barcode="<?= $product['barcode'] ?>">
                                 <div class="card h-100 product-card rounded-4" onclick="addToCart(<?= $product['id'] ?>, '<?= addslashes($product['item_name']) ?>', <?= $product['price'] ?>)">
                                     <div class="card-body p-4 text-center">
                                         <div class="icon-box mx-auto">
@@ -687,7 +687,8 @@
 
         items.forEach(item => {
             const name = item.getAttribute('data-name');
-            if (name.includes(term)) {
+            const barcode = item.getAttribute('data-barcode') || '';
+            if (name.includes(term) || barcode === term) {
                 item.style.display = 'block';
                 found = true;
             } else {
@@ -695,5 +696,55 @@
             }
         });
     });
+
+    // Barcode Scanner Integration
+    let barcodeBuffer = '';
+    let lastKeyTime = Date.now();
+
+    document.addEventListener('keydown', function(e) {
+        // Barcode scanners usually fire keys very quickly
+        const currentTime = Date.now();
+        if (currentTime - lastKeyTime > 100) {
+            barcodeBuffer = ''; // Reset if too slow (likely manual typing)
+        }
+        lastKeyTime = currentTime;
+
+        // Ignore modifier keys
+        if (e.key === 'Shift' || e.key === 'Control' || e.key === 'Alt') return;
+
+        if (e.key === 'Enter') {
+            if (barcodeBuffer.length > 3) {
+                findAndAddByBarcode(barcodeBuffer);
+                barcodeBuffer = '';
+                e.preventDefault();
+            }
+        } else {
+            // Append single character keys
+            if (e.key.length === 1) {
+                barcodeBuffer += e.key;
+            }
+        }
+    });
+
+    function findAndAddByBarcode(barcode) {
+        const items = document.querySelectorAll('.product-item');
+        let found = false;
+        
+        items.forEach(item => {
+            const itemBarcode = item.getAttribute('data-barcode');
+            if (itemBarcode === barcode) {
+                // Trigger the click event on the product card
+                item.querySelector('.product-card').click();
+                found = true;
+                
+                // Show a toast or some feedback
+                console.log('Barcode Scanned: ' + barcode);
+            }
+        });
+
+        if (!found) {
+            console.log('Barcode not found: ' + barcode);
+        }
+    }
 </script>
 <?= $this->endSection() ?>

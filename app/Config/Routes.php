@@ -29,6 +29,7 @@ $routes->post('/categories/update/(:num)', 'Categories::update/$1'); // Updates 
 $routes->post('/categories/delete/(:num)', 'Categories::delete/$1'); // Deletes category
 
 $routes->get('/stock', 'Stock::index');                      // Placeholder
+$routes->post('/stock/update', 'Stock::update');            // Updates stock quantity
 $routes->get('/reports', 'Reports::index');                  // Placeholder
 $routes->get('/audit', 'Audit::index');                      // Placeholder
 
@@ -46,5 +47,7 @@ $routes->post('listahan/store', 'Listahan::store');
 $routes->get('listahan/delete/(:num)', 'Listahan::delete/$1');
 $routes->get('inventory', 'Inventory::index');
 $routes->get('inventory/add', 'Inventory::add');
+$routes->get('inventory/edit/(:num)', 'Inventory::edit/$1'); // Added edit route
 $routes->post('inventory/store', 'Inventory::store');
+$routes->post('inventory/update/(:num)', 'Inventory::update/$1'); // Added update route
 $routes->get('inventory/delete/(:num)', 'Inventory::delete/$1');

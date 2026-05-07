@@ -88,11 +88,12 @@
                     
                     $percent = min(100, ($item['stock'] / 50) * 100); // Assuming 50 is a "full" stock
                 ?>
-                <div class="col-xl-3 col-lg-4 col-md-6 stock-item" data-name="<?= strtolower($item['item_name']) ?>">
+                <div class="col-xl-3 col-lg-4 col-md-6 stock-item" data-name="<?= strtolower($item['item_name']) ?>" data-barcode="<?= $item['barcode'] ?>">
                     <div class="stock-card p-4 h-100">
                         <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div class="bg-light rounded-3 p-3">
-                                <i class="fas fa-box fa-2x text-primary"></i>
+                            <div class="bg-light rounded-3 p-3 text-center" style="min-width: 60px;">
+                                <i class="fas fa-box fa-2x text-primary d-block mb-1"></i>
+                                <small class="text-muted fw-bold" style="font-size: 0.6rem;"><?= $item['barcode'] ?: 'NO BARCODE' ?></small>
                             </div>
                             <span class="stock-badge <?= $stockClass ?>">
                                 <?= $item['stock'] ?> Left
@@ -118,9 +119,12 @@
                             <a href="<?= base_url('inventory/edit/'.$item['id']) ?>" class="btn btn-light btn-sm flex-grow-1 fw-bold rounded-3">
                                 <i class="fas fa-edit me-1"></i> Edit
                             </a>
-                            <button class="btn btn-primary btn-sm flex-grow-1 fw-bold rounded-3" onclick="alert('Quick Update feature coming soon!')">
-                                <i class="fas fa-plus me-1"></i> Add
+                            <button type="button" class="btn btn-primary btn-sm flex-grow-1 fw-bold rounded-3" onclick="openUpdateModal(<?= $item['id'] ?>, '<?= htmlspecialchars(addslashes($item['item_name'])) ?>', <?= $item['stock'] ?>)">
+                                <i class="fas fa-plus me-1"></i> Restock
                             </button>
+                            <a href="<?= base_url('inventory/delete/'.$item['id']) ?>" class="btn btn-outline-danger btn-sm rounded-3 px-2" onclick="return confirm('Are you sure you want to delete this item?')">
+                                <i class="fas fa-trash"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -135,14 +139,73 @@
     </div>
 </div>
 
+<!-- Update Stock Modal -->
+<div class="modal fade" id="updateStockModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <form id="updateStockForm" action="<?= base_url('stock/update') ?>" method="POST">
+                <?= csrf_field() ?>
+                <input type="hidden" name="id" id="updateItemId">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">Update Stock</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="text-center mb-4">
+                        <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                            <i class="fas fa-box fa-2x text-primary"></i>
+                        </div>
+                        <h4 class="fw-bold mb-1" id="updateItemName">Product Name</h4>
+                        <p class="text-muted">Current Stock: <span class="fw-bold text-dark" id="currentStockDisplay">0</span></p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Quantity to Add</label>
+                        <div class="input-group input-group-lg">
+                            <button type="button" class="btn btn-outline-secondary" onclick="adjustQty(-1)">-</button>
+                            <input type="number" name="add_qty" id="addQtyInput" class="form-control text-center fw-bold" value="1" min="1">
+                            <button type="button" class="btn btn-outline-secondary" onclick="adjustQty(1)">+</button>
+                        </div>
+                        <small class="text-muted mt-2 d-block">This will be added to the current stock level.</small>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-0 p-4">
+                    <button type="button" class="btn btn-light py-2 px-4 rounded-3 fw-bold" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary py-2 px-4 rounded-3 fw-bold">Update Stock</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
+    function getUpdateModal() {
+        return bootstrap.Modal.getOrCreateInstance(document.getElementById('updateStockModal'));
+    }
+
+    function openUpdateModal(id, name, currentStock) {
+        document.getElementById('updateItemId').value = id;
+        document.getElementById('updateItemName').innerText = name;
+        document.getElementById('currentStockDisplay').innerText = currentStock;
+        document.getElementById('addQtyInput').value = 1;
+        getUpdateModal().show();
+    }
+
+    function adjustQty(delta) {
+        const input = document.getElementById('addQtyInput');
+        let val = parseInt(input.value) || 0;
+        val = Math.max(1, val + delta);
+        input.value = val;
+    }
+
     document.getElementById('stockSearch').addEventListener('input', function(e) {
         const term = e.target.value.toLowerCase();
         const items = document.querySelectorAll('.stock-item');
         
         items.forEach(item => {
             const name = item.getAttribute('data-name');
-            if (name.includes(term)) {
+            const barcode = item.getAttribute('data-barcode') || '';
+            if (name.includes(term) || barcode.includes(term)) {
                 item.style.display = 'block';
             } else {
                 item.style.display = 'none';

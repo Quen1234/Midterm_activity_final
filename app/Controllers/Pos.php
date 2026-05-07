@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\InventoryModel;
 use App\Models\ListahanModel;
+use App\Models\TransactionModel;
 
 class Pos extends BaseController
 {
@@ -28,6 +29,7 @@ class Pos extends BaseController
 
         $inventoryModel = new InventoryModel();
         $listahanModel = new ListahanModel();
+        $transactionModel = new TransactionModel();
         $db = \Config\Database::connect();
         
         $db->transStart();
@@ -65,6 +67,15 @@ class Pos extends BaseController
                 ]);
             }
         }
+
+        // 3. Save Transaction for Revenue Tracking
+        $transactionModel->save([
+            'customer_name'  => $json->customer_name,
+            'payment_method' => $json->payment_method,
+            'total_amount'   => $json->total_amount,
+            'amount_paid'    => $json->amount_paid,
+            'items_json'     => json_encode($json->items)
+        ]);
 
         $db->transComplete();
 

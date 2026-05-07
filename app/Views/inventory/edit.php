@@ -66,34 +66,34 @@
     <div class="form-card">
         <div class="form-header text-center">
             <div class="mb-3">
-                <i class="fas fa-box-open fa-3x opacity-50"></i>
+                <i class="fas fa-edit fa-3x opacity-50"></i>
             </div>
-            <h2 class="fw-bold mb-1">New Product Entry</h2>
-            <p class="mb-0 opacity-75">Fill in the details below to add a new item to your stock.</p>
+            <h2 class="fw-bold mb-1">Edit Product</h2>
+            <p class="mb-0 opacity-75">Update the details for <strong><?= esc($item['item_name']) ?></strong>.</p>
         </div>
 
         <div class="p-4 p-md-5">
-            <form action="<?= base_url('inventory/store') ?>" method="POST">
+            <form action="<?= base_url('inventory/update/'.$item['id']) ?>" method="POST">
                 <?= csrf_field() ?>
                 
                 <div class="row g-4">
                     <div class="col-md-4">
                         <div class="input-group-custom">
                             <label><i class="fas fa-barcode me-1"></i> Barcode</label>
-                            <input type="text" name="barcode" class="form-control" placeholder="Scan or type barcode...">
+                            <input type="text" name="barcode" class="form-control" value="<?= esc($item['barcode']) ?>" placeholder="Scan or type barcode...">
                         </div>
                     </div>
                     <div class="col-md-8">
                         <div class="input-group-custom">
                             <label><i class="fas fa-tag me-1"></i> Product Label / Item Name</label>
-                            <input type="text" name="item_name" class="form-control" placeholder="e.g. Coca-Cola 1.5L" required>
+                            <input type="text" name="item_name" class="form-control" value="<?= esc($item['item_name']) ?>" placeholder="e.g. Coca-Cola 1.5L" required>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="input-group-custom">
                             <label><i class="fas fa-layer-group me-1"></i> Category</label>
-                            <input type="text" name="category" list="categoryOptions" class="form-control" placeholder="Select or Type..." required>
+                            <input type="text" name="category" list="categoryOptions" class="form-control" value="<?= esc($item['category']) ?>" placeholder="Select or Type..." required>
                             <datalist id="categoryOptions">
                                 <option value="Beverages">
                                 <option value="Snacks">
@@ -106,14 +106,14 @@
                     <div class="col-md-3">
                         <div class="input-group-custom">
                             <label><i class="fas fa-coins me-1"></i> Price (₱)</label>
-                            <input type="number" step="0.01" name="price" class="form-control" placeholder="0.00" required>
+                            <input type="number" step="0.01" name="price" class="form-control" value="<?= esc($item['price']) ?>" placeholder="0.00" required>
                         </div>
                     </div>
 
                     <div class="col-md-3">
                         <div class="input-group-custom">
                             <label><i class="fas fa-cubes me-1"></i> Quantity</label>
-                            <input type="number" name="stock" class="form-control" placeholder="0" required>
+                            <input type="number" name="stock" class="form-control" value="<?= esc($item['stock']) ?>" placeholder="0" required>
                         </div>
                     </div>
                 </div>
@@ -121,13 +121,13 @@
                 <hr class="my-5 opacity-50">
 
                 <div class="d-flex justify-content-between align-items-center">
-                    <a href="<?= base_url('inventory') ?>" class="text-secondary text-decoration-none fw-semibold">
-                        <i class="fas fa-arrow-left me-1"></i> Back to Inventory
+                    <a href="<?= base_url('stock') ?>" class="text-secondary text-decoration-none fw-semibold">
+                        <i class="fas fa-arrow-left me-1"></i> Back to Stocks
                     </a>
                     <div>
-                        <button type="reset" class="btn btn-light px-4 me-2">Clear</button>
+                        <a href="<?= base_url('stock') ?>" class="btn btn-light px-4 me-2">Cancel</a>
                         <button type="submit" class="btn btn-primary btn-save">
-                            <i class="fas fa-check-circle me-2"></i> Save Product
+                            <i class="fas fa-check-circle me-2"></i> Update Product
                         </button>
                     </div>
                 </div>

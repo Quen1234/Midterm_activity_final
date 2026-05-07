@@ -10,7 +10,7 @@ class InventoryModel extends Model
     protected $primaryKey = 'id';
 
     // Allow the system to insert into these specific columns
-    protected $allowedFields = ['item_name', 'category', 'price', 'stock'];
+    protected $allowedFields = ['barcode', 'item_name', 'category', 'price', 'stock'];
 
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';
