@@ -1,93 +1,267 @@
-<!-- Load modern font and icons (put these in your header if possible) -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<?= $this->extend('layout/main') ?>
+<?= $this->section('content') ?>
+
+<!-- Load modern font and icons -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
 <style>
-    body { background-color: #fcfcfd; font-family: 'Inter', sans-serif; color: #334155; }
+    :root {
+        --primary: #4361ee;
+        --primary-dark: #3a56d4;
+        --success: #06ffa5;
+        --danger: #f72585;
+        --warning: #ffb703;
+        --dark: #1e293b;
+        --gray-bg: #f8fafc;
+        --border: #e2e8f0;
+    }
     
-    /* Layout styling */
-    .main-card { border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); background: #fff; }
-    
-    /* Stats Styling */
-    .stats-card { background: #1e293b; color: #fff; border-radius: 16px; border: none; }
+    /* Stats Card */
+    .stats-card { 
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        border-radius: 24px; 
+        border: none;
+        transition: transform 0.2s, box-shadow 0.2s;
+        position: relative;
+        overflow: hidden;
+    }
+    .stats-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    }
+    .stats-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #4361ee, #06ffa5);
+    }
     
     /* Table Styling */
     .table thead th { 
-        background-color: #f8fafc; 
+        background: #f1f5f9;
         text-transform: uppercase; 
         font-size: 0.7rem; 
         letter-spacing: 0.05em; 
         font-weight: 700; 
         color: #64748b; 
         border: none;
-        padding: 16px;
+        padding: 16px 20px;
     }
-    .table tbody td { padding: 16px; border-color: #f1f5f9; vertical-align: middle; }
+    .table tbody td { 
+        padding: 16px 20px; 
+        border-color: #f1f5f9; 
+        vertical-align: middle; 
+        font-size: 0.9rem;
+    }
+    .table tbody tr:hover {
+        background: #fafbff;
+        transition: background 0.2s;
+    }
     
-    /* Avatar initials icon */
+    /* Avatar initials */
     .avatar-init { 
-        width: 35px; height: 35px; 
-        background: #f1f5f9; color: #475569; 
-        display: flex; align-items: center; justify-content: center; 
-        border-radius: 10px; font-weight: 600; font-size: 0.85rem; 
+        width: 42px; 
+        height: 42px; 
+        background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+        color: #4338ca; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        border-radius: 12px; 
+        font-weight: 700; 
+        font-size: 1rem; 
     }
     
-    /* Modern Form Inputs */
-    .form-control { 
+    /* Form Controls */
+    .form-control, .form-select { 
         background-color: #f8fafc; 
         border: 1px solid #e2e8f0; 
-        border-radius: 10px; 
-        padding: 10px 14px; 
+        border-radius: 12px; 
+        padding: 12px 16px; 
+        font-size: 0.9rem;
+        transition: all 0.2s;
     }
-    .form-control:focus { background-color: #fff; border-color: #cbd5e1; box-shadow: none; }
+    .form-control:focus, .form-select:focus { 
+        background-color: #fff; 
+        border-color: #4361ee; 
+        box-shadow: 0 0 0 3px rgba(67,97,238,0.1); 
+        outline: none;
+    }
     
-    /* Button pill style */
-    .btn-pill { border-radius: 10px; padding: 10px 20px; font-weight: 600; transition: all 0.2s; }
+    /* Button Pill */
+    .btn-pill { 
+        border-radius: 14px; 
+        padding: 10px 20px; 
+        font-weight: 600; 
+        transition: all 0.2s; 
+        font-size: 0.9rem;
+    }
+    .btn-dark {
+        background: #1e293b;
+        border: none;
+    }
+    .btn-dark:hover {
+        background: #0f172a;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .btn-outline-danger {
+        border-radius: 10px;
+        padding: 6px 14px;
+        font-size: 0.8rem;
+    }
+    
+    /* Badge */
+    .badge-amount {
+        background: #fef3c7;
+        color: #d97706;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.8rem;
+    }
+    
+    /* Empty State */
+    .empty-state {
+        padding: 60px 20px;
+        text-align: center;
+    }
+    .empty-state i {
+        font-size: 4rem;
+        color: #cbd5e1;
+        margin-bottom: 1rem;
+    }
+    
+    /* Breadcrumb */
+    .breadcrumb-item a {
+        color: #64748b;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+    .breadcrumb-item a:hover {
+        color: #4361ee;
+    }
+    
+    /* Modal Styling */
+    .modal-content {
+        border-radius: 24px;
+        border: none;
+    }
+    .modal-header {
+        border-bottom: 1px solid #f1f5f9;
+    }
+    .input-group-text {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px 0 0 12px;
+        font-weight: 600;
+    }
+    .input-group .form-control {
+        border-radius: 0 12px 12px 0;
+    }
+    
+    /* Animation */
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in-up {
+        animation: fadeInUp 0.4s ease;
+    }
+    
+    /* Main Card */
+    .main-card { 
+        border: none; 
+        border-radius: 24px; 
+        box-shadow: 0 10px 40px rgba(0,0,0,0.05); 
+        background: #fff; 
+        overflow: hidden;
+    }
 </style>
 
-<div class="container py-5">
+<div class="fade-in-up">
     
-<!-- Breadcrumb Navigation -->
-<nav aria-label="breadcrumb" class="mb-2">
-    <ol class="breadcrumb bg-transparent p-0 small">
-        <li class="breadcrumb-item">
-            <a href="<?= base_url('dashboard') ?>" class="text-decoration-none text-muted">
-                <i class="bi bi-house-door me-1"></i> Dashboard
-            </a>
-        </li>
-        <li class="breadcrumb-item active text-dark fw-semibold" aria-current="page">Digital Listahan</li>
-    </ol>
-</nav>
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb bg-transparent p-0 small">
+            <li class="breadcrumb-item">
+                <a href="<?= base_url('dashboard') ?>" class="text-decoration-none">
+                    <i class="bi bi-house-door me-1"></i> Dashboard
+                </a>
+            </li>
+            <li class="breadcrumb-item active text-dark fw-semibold" aria-current="page">
+                <i class="bi bi-journal-bookmark-fill me-1"></i> Digital Listahan
+            </li>
+        </ol>
+    </nav>
 
-<!-- Page Header Section -->
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <div class="d-flex align-items-center">
-        <!-- Minimalist Back Arrow -->
-        <a href="<?= base_url('dashboard') ?>" class="btn btn-light rounded-circle border-0 me-3 shadow-sm d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-        </a>
-        
-        <div>
-            <h2 class="fw-bold text-dark mb-0">Digital Listahan</h2>
-            <p class="text-muted small mb-0">Tracking active store credits</p>
+    <!-- Page Header Section -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+        <div class="d-flex align-items-center">
+            <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                <i class="bi bi-journal-bookmark-fill fs-3 text-primary"></i>
+            </div>
+            <div>
+                <h2 class="fw-bold text-dark mb-0">Digital Listahan</h2>
+                <p class="text-muted small mb-0">Track and manage customer credit / utang records</p>
+            </div>
         </div>
+
+        <!-- New Entry Button -->
+        <button class="btn btn-dark btn-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#addModal">
+            <i class="bi bi-plus-lg me-2"></i> New Entry
+        </button>
     </div>
 
-    <!-- New Entry Button -->
-    <button class="btn btn-dark btn-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#addModal">
-        <i class="bi bi-plus-lg me-1"></i> New Entry
-    </button>
-</div>
-
-    <!-- Summary Statistics Card -->
-    <div class="row mb-4">
+    <!-- Summary Statistics Cards -->
+    <div class="row g-3 mb-4">
         <div class="col-md-4">
-            <div class="card stats-card p-4">
-                <div class="d-flex justify-content-between">
+            <div class="stats-card p-4">
+                <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <span class="text-white-50 small d-block mb-1">Total Outstanding</span>
-                        <h3 class="fw-bold mb-0">₱ <?= number_format(array_sum(array_column($listahan, 'amount')), 2) ?></h3>
+                        <span class="text-white-50 small text-uppercase tracking-wide d-block mb-2">Total Outstanding</span>
+                        <h2 class="fw-bold text-white mb-0">₱ <?= number_format(array_sum(array_column($listahan, 'amount') ?? []), 2) ?></h2>
                     </div>
-                    <i class="bi bi-piggy-bank fs-1 text-white-50"></i>
+                    <div class="bg-white bg-opacity-10 rounded-3 p-3">
+                        <i class="bi bi-piggy-bank fs-1 text-white opacity-75"></i>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <span class="text-white-50 small">
+                        <i class="bi bi-people-fill me-1"></i> <?= count($listahan ?? []) ?> active borrowers
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="stats-card p-4" style="background: linear-gradient(135deg, #1e3a5f 0%, #0f2b45 100%);">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-white-50 small text-uppercase d-block mb-2">Average Debt</span>
+                        <h2 class="fw-bold text-white mb-0">₱ <?= number_format(array_sum(array_column($listahan, 'amount') ?? []) / max(1, count($listahan ?? [])), 2) ?></h2>
+                    </div>
+                    <div class="bg-white bg-opacity-10 rounded-3 p-3">
+                        <i class="bi bi-graph-up fs-1 text-white opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="stats-card p-4" style="background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-white-50 small text-uppercase d-block mb-2">Highest Debt</span>
+                        <h2 class="fw-bold text-white mb-0">₱ <?= number_format(max(array_column($listahan, 'amount') ?? [0]), 2) ?></h2>
+                    </div>
+                    <div class="bg-white bg-opacity-10 rounded-3 p-3">
+                        <i class="bi bi-trophy fs-1 text-white opacity-75"></i>
+                    </div>
                 </div>
             </div>
         </div>
@@ -95,8 +269,19 @@
 
     <!-- Data Table Container -->
     <div class="card main-card overflow-hidden">
+        <div class="card-header bg-white border-0 px-4 pt-4 pb-0">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <h5 class="fw-bold mb-0"><i class="bi bi-table me-2"></i>Credit Records</h5>
+                <div class="d-flex gap-2">
+                    <div class="input-group input-group-sm" style="width: 250px;">
+                        <span class="input-group-text bg-light border-0 rounded-start-3"><i class="bi bi-search"></i></span>
+                        <input type="text" id="searchInput" class="form-control form-control-sm bg-light border-0 rounded-end-3" placeholder="Search customer...">
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="table-responsive">
-            <table class="table table-hover mb-0">
+            <table class="table table-hover mb-0" id="debtTable">
                 <thead>
                     <tr>
                         <th class="ps-4">Customer Name</th>
@@ -106,63 +291,155 @@
                         <th class="text-end pe-4">Action</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php if(!empty($listahan)): foreach ($listahan as $item): ?>
-                    <tr>
-                        <td class="ps-4">
-                            <div class="d-flex align-items-center">
-                                <div class="avatar-init me-3"><?= strtoupper(substr($item['customer_name'], 0, 1)) ?></div>
-                                <span class="fw-semibold text-dark"><?= esc($item['customer_name']) ?></span>
-                            </div>
-                        </td>
-                        <td class="text-muted small"><?= esc($item['items']) ?></td>
-                        <td><span class="text-danger fw-bold">₱<?= number_format($item['amount'], 2) ?></span></td>
-                        <td class="text-muted small"><?= date('M d, Y', strtotime($item['created_at'])) ?></td>
-                        <td class="text-end pe-4">
-                            <a href="/listahan/delete/<?= $item['id'] ?>" 
-                               class="btn btn-light btn-sm rounded-pill px-3 text-danger border-0" 
-                               onclick="return confirm('Settle this debt?')">
-                                <i class="bi bi-trash3"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    <?php endforeach; else: ?>
-                    <tr><td colspan="5" class="text-center py-5 text-muted">No pending listahan found.</td></tr>
+                <tbody id="tableBody">
+                    <?php if(!empty($listahan) && is_array($listahan)): ?>
+                        <?php foreach ($listahan as $item): ?>
+                        <tr class="debt-row">
+                            <td class="ps-4">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="avatar-init"><?= strtoupper(substr($item['customer_name'], 0, 1)) ?></div>
+                                    <div>
+                                        <span class="fw-semibold text-dark"><?= esc($item['customer_name']) ?></span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-muted small"><?= esc($item['items'] ?? '—') ?></td>
+                            <td>
+                                <span class="badge-amount">₱ <?= number_format($item['amount'], 2) ?></span>
+                            </td>
+                            <td class="text-muted small"><?= date('M d, Y', strtotime($item['created_at'])) ?></td>
+                            <td class="text-end pe-4">
+                                <button class="btn btn-sm btn-outline-danger rounded-pill px-3 delete-btn" 
+                                        data-id="<?= $item['id'] ?>"
+                                        data-name="<?= esc($item['customer_name']) ?>">
+                                    <i class="bi bi-check2-circle me-1"></i> Settle
+                                </button>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="5">
+                                <div class="empty-state">
+                                    <i class="bi bi-inbox"></i>
+                                    <h5 class="text-muted">No pending listahan records</h5>
+                                    <p class="text-muted small">Click "New Entry" to add a customer credit record</p>
+                                </div>
+                            </td>
+                        </tr>
                     <?php endif; ?>
                 </tbody>
             </table>
         </div>
+        <div class="card-footer bg-white border-0 px-4 py-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <small class="text-muted">Showing <?= count($listahan ?? []) ?> records</small>
+                <small class="text-muted"><i class="bi bi-info-circle"></i> Click "Settle" to mark debt as paid</small>
+            </div>
+        </div>
     </div>
 </div>
 
-<!-- Aesthetic Modal -->
+<!-- Aesthetic Modal for Add Record -->
 <div class="modal fade" id="addModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <form action="/listahan/store" method="POST" class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
-      <div class="modal-header border-0 px-4 pt-4">
-          <h5 class="fw-bold mb-0">Add New Record</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body p-4">
-        <div class="mb-3">
-            <label class="small text-muted fw-bold mb-1">Customer Full Name</label>
-            <input type="text" name="customer_name" class="form-control shadow-none" placeholder="Juan Dela Cruz" required>
-        </div>
-        <div class="mb-3">
-            <label class="small text-muted fw-bold mb-1">Purchased Items</label>
-            <textarea name="items" class="form-control shadow-none" rows="3" placeholder="e.g. 1kg Rice, 2 Coffee Sticks"></textarea>
-        </div>
-        <div class="mb-0">
-            <label class="small text-muted fw-bold mb-1">Total Debt Amount</label>
-            <div class="input-group">
-                <span class="input-group-text bg-light border-0">₱</span>
-                <input type="number" step="0.01" name="amount" class="form-control border-0 bg-light shadow-none" placeholder="0.00" required>
+    <div class="modal-dialog modal-dialog-centered">
+        <form action="/listahan/store" method="POST" class="modal-content border-0 shadow-lg">
+            <?= csrf_field() ?>
+            <div class="modal-header border-0 px-4 pt-4">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="rounded-circle bg-primary bg-opacity-10 p-2">
+                        <i class="bi bi-journal-plus text-primary fs-5"></i>
+                    </div>
+                    <h5 class="fw-bold mb-0">Add New Credit Record</h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="mb-3">
+                    <label class="small fw-bold text-muted mb-2">
+                        <i class="bi bi-person me-1"></i> Customer Full Name
+                    </label>
+                    <input type="text" name="customer_name" class="form-control shadow-none" placeholder="e.g., Maria Dela Cruz" required>
+                </div>
+                <div class="mb-3">
+                    <label class="small fw-bold text-muted mb-2">
+                        <i class="bi bi-receipt me-1"></i> Purchased Items
+                    </label>
+                    <textarea name="items" class="form-control shadow-none" rows="3" placeholder="e.g., 2kg Rice, 1L Cooking Oil, Coffee"></textarea>
+                </div>
+                <div class="mb-0">
+                    <label class="small fw-bold text-muted mb-2">
+                        <i class="bi bi-cash-stack me-1"></i> Total Debt Amount
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-0 fw-bold">₱</span>
+                        <input type="number" step="0.01" name="amount" class="form-control border-0 bg-light shadow-none" placeholder="0.00" required>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0 p-4 pt-0">
+                <button type="button" class="btn btn-light btn-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-dark btn-pill px-4">
+                    <i class="bi bi-save me-2"></i> Save Record
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Settlement Confirmation Modal -->
+<div class="modal fade" id="settleModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+            <div class="modal-header border-0">
+                <div class="rounded-circle bg-success bg-opacity-10 p-2">
+                    <i class="bi bi-check2-circle text-success fs-4"></i>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center p-4">
+                <h5 class="fw-bold">Settle Debt?</h5>
+                <p class="text-muted mb-0">Mark <strong id="settleCustomerName"></strong>'s debt as paid? This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer border-0 justify-content-center pb-4">
+                <button type="button" class="btn btn-light btn-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                <a href="#" id="confirmSettleBtn" class="btn btn-dark btn-pill px-4">
+                    <i class="bi bi-check2-circle me-2"></i> Confirm Settle
+                </a>
             </div>
         </div>
-      </div>
-      <div class="modal-footer border-0 p-4 pt-0">
-        <button type="submit" class="btn btn-dark btn-pill w-100 py-3">Save Debt Record</button>
-      </div>
-    </form>
-  </div>
+    </div>
 </div>
+
+<script>
+// Search functionality
+document.getElementById('searchInput')?.addEventListener('keyup', function() {
+    let searchTerm = this.value.toLowerCase();
+    let rows = document.querySelectorAll('.debt-row');
+    rows.forEach(row => {
+        let customerName = row.querySelector('td:first-child .fw-semibold')?.innerText.toLowerCase() || '';
+        row.style.display = customerName.includes(searchTerm) ? '' : 'none';
+    });
+});
+
+// Settlement confirmation
+document.querySelectorAll('.delete-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        let id = this.getAttribute('data-id');
+        let name = this.getAttribute('data-name');
+        document.getElementById('settleCustomerName').innerText = name;
+        document.getElementById('confirmSettleBtn').setAttribute('href', '/listahan/delete/' + id);
+        new bootstrap.Modal(document.getElementById('settleModal')).show();
+    });
+});
+
+// Auto-dismiss alerts
+setTimeout(() => {
+    document.querySelectorAll('.alert').forEach(alert => {
+        alert.classList.add('fade');
+        setTimeout(() => alert.remove(), 500);
+    });
+}, 5000);
+</script>
+
+<?= $this->endSection() ?>
