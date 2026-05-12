@@ -479,3 +479,4 @@ ORDER BY DATE_FORMAT(created_at ASC, \'%Y-%m\') ASC', [...], false)
 12 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\Midterm_activity_final\\public\\index.php')
 DEBUG - 2026-05-12 15:36:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
 DEBUG - 2026-05-12 15:37:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 15:39:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.

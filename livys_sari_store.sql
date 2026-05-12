@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 08, 2026 at 07:32 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: May 12, 2026 at 05:46 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -62,10 +62,8 @@ CREATE TABLE `inventory` (
 --
 
 INSERT INTO `inventory` (`id`, `barcode`, `item_name`, `category`, `price`, `stock`, `created_at`) VALUES
-(3, NULL, 'colgate', 'Hygeine', 20.00, 20, '2026-04-16 08:06:55'),
-(4, NULL, 'Camel', 'wants', 10.00, 19, '2026-04-16 08:22:38'),
-(5, NULL, 'qqq', 'Beverages', 12.00, 13, '2026-04-17 04:40:35'),
-(6, NULL, 'coke 150ml', 'Beverages', 15.00, 9, '2026-05-07 08:54:39');
+(3, NULL, 'colgate', 'Hygeine', 20.00, 2, '2026-04-16 08:06:55'),
+(4, NULL, 'Camel', 'wants', 10.00, 14, '2026-04-16 08:22:38');
 
 -- --------------------------------------------------------
 
@@ -82,6 +80,15 @@ CREATE TABLE `listahan` (
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `listahan`
+--
+
+INSERT INTO `listahan` (`id`, `customer_name`, `items`, `amount`, `status`, `created_at`, `updated_at`) VALUES
+(2, 'Justin Gariando', 'water', 20.00, 'unpaid', '2026-04-16 14:56:13', '2026-04-16 14:56:13'),
+(3, 'abegail gelba', 'toxino, rice', 45.00, 'unpaid', '2026-04-16 14:56:55', '2026-04-16 14:56:55'),
+(6, 'Chazely Lopez', 'coke 1litter', 45.00, 'unpaid', '2026-05-12 23:27:33', '2026-05-12 23:27:33');
 
 -- --------------------------------------------------------
 
@@ -104,9 +111,8 @@ CREATE TABLE `migrations` (
 --
 
 INSERT INTO `migrations` (`id`, `version`, `class`, `group`, `namespace`, `time`, `batch`) VALUES
-(1, '2026-05-07-075151', 'App\\Database\\Migrations\\AddCategoriesTable', 'default', 'App', 1778140346, 1),
-(2, '2026-05-07-000000', 'App\\Database\\Migrations\\AddBarcodeToInventory', 'default', 'App', 1778144629, 2),
-(3, '2026-05-07-000001', 'App\\Database\\Migrations\\CreateTransactionsTable', 'default', 'App', 1778144990, 3);
+(1, '2026-05-07-000000', 'App\\Database\\Migrations\\AddBarcodeToInventory', 'default', 'App', 1778595768, 1),
+(2, '2026-05-07-000001', 'App\\Database\\Migrations\\CreateTransactionsTable', 'default', 'App', 1778595768, 1);
 
 -- --------------------------------------------------------
 
@@ -129,9 +135,9 @@ CREATE TABLE `transactions` (
 --
 
 INSERT INTO `transactions` (`id`, `customer_name`, `payment_method`, `total_amount`, `amount_paid`, `items_json`, `created_at`) VALUES
-(1, 'Guest', 'cash', 42.00, 42.00, '[{\"id\":3,\"name\":\"colgate\",\"qty\":1,\"price\":20},{\"id\":4,\"name\":\"Camel\",\"qty\":1,\"price\":10},{\"id\":5,\"name\":\"qqq\",\"qty\":1,\"price\":12}]', '2026-05-07 17:10:29'),
-(2, 'Guest', 'gcash', 37.00, 37.00, '[{\"id\":5,\"name\":\"qqq\",\"qty\":1,\"price\":12},{\"id\":4,\"name\":\"Camel\",\"qty\":1,\"price\":10},{\"id\":6,\"name\":\"coke 150ml\",\"qty\":1,\"price\":15}]', '2026-05-07 17:15:32'),
-(3, 'Guest', 'cash', 57.00, 57.00, '[{\"id\":5,\"name\":\"qqq\",\"qty\":1,\"price\":12},{\"id\":4,\"name\":\"Camel\",\"qty\":1,\"price\":10},{\"id\":3,\"name\":\"colgate\",\"qty\":1,\"price\":20},{\"id\":6,\"name\":\"coke 150ml\",\"qty\":1,\"price\":15}]', '2026-05-07 17:17:32');
+(1, 'Guest', 'cash', 50.00, 50.00, '[{\"id\":4,\"name\":\"Camel\",\"qty\":1,\"price\":10},{\"id\":3,\"name\":\"colgate\",\"qty\":2,\"price\":20}]', '2026-05-12 23:03:29'),
+(2, 'Jayven Kim Gajo', 'partial', 50.00, 25.00, '[{\"name\":\"Partial Debt Settlement: royal, ice2\",\"qty\":1,\"price\":25}]', '2026-05-12 23:24:59'),
+(3, 'Jayven Kim Gajo', 'gcash', 25.00, 25.00, '[{\"name\":\"Debt Settlement: royal, ice2\",\"qty\":1,\"price\":25}]', '2026-05-12 23:25:14');
 
 -- --------------------------------------------------------
 
@@ -153,19 +159,11 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `password`, `role`, `created_at`) VALUES
 (2, 'admin1', '$2y$10$GOUVBypwL1SyJYmFLf3s9O9ftnjmrIMXPymxLgmnMLqflI0NM3GJm', 'admin', '2026-04-15 12:11:02'),
-(4, 'admin2', '$2y$10$FFtPqmTwnljsPzYdPjBfWOsZtfUj5QY2R6BsOzcyBgJ9.trQsFqH6', 'user', '2026-05-07 14:38:48'),
-(5, 'admin0', '$2y$10$GtUL5zu/JXDU6qNvmagKvuhp8Kf3lwDWr1kbO9npjJfMMcUQUqYYa', 'user', '2026-05-07 15:28:49');
+(4, 'admin0', '$2y$10$h3d.MVndiWdQq10kvuMUWecUwFon0ZMjufDGUa303ZvA66KYrsQbC', 'admin', '2026-05-12 22:19:54');
 
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `categories`
---
-ALTER TABLE `categories`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `name` (`name`);
 
 --
 -- Indexes for table `inventory`
@@ -202,28 +200,22 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `categories`
---
-ALTER TABLE `categories`
-  MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
 -- AUTO_INCREMENT for table `inventory`
 --
 ALTER TABLE `inventory`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `listahan`
 --
 ALTER TABLE `listahan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `transactions`
@@ -235,7 +227,7 @@ ALTER TABLE `transactions`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
