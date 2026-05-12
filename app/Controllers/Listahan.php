@@ -9,6 +9,19 @@ class Listahan extends BaseController
 {
     public function index()
     {
+        $db = \Config\Database::connect();
+        if (!$db->fieldExists('due_date', 'listahan')) {
+            $forge = \Config\Database::forge();
+            $fields = [
+                'due_date' => [
+                    'type' => 'DATE',
+                    'null' => true,
+                    'after' => 'amount'
+                ],
+            ];
+            $forge->addColumn('listahan', $fields);
+        }
+
         $model = new ListahanModel();
         $data['listahan'] = $model->orderBy('created_at', 'DESC')->findAll();
         return view('listahan/index', $data);
@@ -17,10 +30,18 @@ class Listahan extends BaseController
     public function store()
     {
         $model = new ListahanModel();
+        
+        // Use custom due date if provided, otherwise default to 7 days from now
+        $dueDate = $this->request->getPost('due_date');
+        if (empty($dueDate)) {
+            $dueDate = date('Y-m-d', strtotime('+7 days'));
+        }
+
         $model->save([
             'customer_name' => $this->request->getPost('customer_name'),
             'items'         => $this->request->getPost('items'),
             'amount'        => $this->request->getPost('amount'),
+            'due_date'      => $dueDate,
             'status'        => 'unpaid'
         ]);
         return redirect()->to('/listahan')->with('status', 'Added successfully!');

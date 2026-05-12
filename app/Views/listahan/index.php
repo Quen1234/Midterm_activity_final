@@ -287,6 +287,7 @@
                         <th class="ps-4">Customer Name</th>
                         <th>Items Description</th>
                         <th>Amount Due</th>
+                        <th>Due Date</th>
                         <th>Date Added</th>
                         <th class="text-end pe-4">Action</th>
                     </tr>
@@ -307,6 +308,27 @@
                             <td>
                                 <span class="badge-amount">₱ <?= number_format($item['amount'], 2) ?></span>
                             </td>
+                            <td>
+                                <?php 
+                                    $dueDateStr = $item['due_date'] ?? date('Y-m-d', strtotime("+7 days", strtotime($item['created_at'])));
+                                    $dueDate = strtotime($dueDateStr);
+                                    $isOverdue = time() > $dueDate;
+                                ?>
+                                <div class="d-flex flex-column">
+                                    <span class="small fw-semibold <?= $isOverdue ? 'text-danger' : 'text-dark' ?>">
+                                        <?= date('M d, Y', $dueDate) ?>
+                                    </span>
+                                    <?php if($isOverdue): ?>
+                                        <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill mt-1" style="font-size: 0.65rem; width: fit-content;">
+                                            <i class="bi bi-exclamation-circle me-1"></i> OVERDUE
+                                        </span>
+                                    <?php else: ?>
+                                        <span class="badge bg-success bg-opacity-10 text-success rounded-pill mt-1" style="font-size: 0.65rem; width: fit-content;">
+                                            <i class="bi bi-clock-history me-1"></i> ON TIME
+                                        </span>
+                                    <?php endif; ?>
+                                </div>
+                            </td>
                             <td class="text-muted small"><?= date('M d, Y', strtotime($item['created_at'])) ?></td>
                             <td class="text-end pe-4">
                                 <div class="d-flex justify-content-end gap-2">
@@ -315,6 +337,7 @@
                                             data-name="<?= esc($item['customer_name']) ?>"
                                             data-items="<?= esc($item['items'] ?? '') ?>"
                                             data-amount="<?= $item['amount'] ?>"
+                                            data-due="<?= $item['due_date'] ?? date('Y-m-d', strtotime('+7 days', strtotime($item['created_at']))) ?>"
                                             data-date="<?= date('M d, Y h:i A', strtotime($item['created_at'])) ?>">
                                         <i class="bi bi-receipt me-1"></i> Receipt
                                     </button>
@@ -330,7 +353,7 @@
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="5">
+                            <td colspan="6">
                                 <div class="empty-state">
                                     <i class="bi bi-inbox"></i>
                                     <h5 class="text-muted">No pending listahan records</h5>
@@ -378,9 +401,16 @@
                     </label>
                     <textarea name="items" class="form-control shadow-none" rows="3" placeholder="e.g., 2kg Rice, 1L Cooking Oil, Coffee"></textarea>
                 </div>
-                <div class="mb-0">
+                <div class="mb-3">
                     <label class="small fw-bold text-muted mb-2">
-                        <i class="bi bi-cash-stack me-1"></i> Total Debt Amount
+                        <i class="bi bi-calendar-event me-1"></i> Custom Due Date (Optional)
+                    </label>
+                    <input type="date" name="due_date" class="form-control shadow-none">
+                    <small class="text-muted">Defaults to 7 days from now if left blank.</small>
+                </div>
+                <div class="mb-3">
+                    <label class="small fw-bold text-muted mb-2">
+                        <i class="bi bi-cash me-1"></i> Total Amount Due
                     </label>
                     <div class="input-group">
                         <span class="input-group-text bg-light border-0 fw-bold">₱</span>
@@ -487,6 +517,10 @@
                             <span>Status:</span>
                             <span class="fw-bold text-danger">UNPAID (UTANG)</span>
                         </div>
+                        <div class="d-flex justify-content-between mt-1">
+                            <span>Due Date:</span>
+                            <span class="fw-bold text-dark" id="receiptDueDate"></span>
+                        </div>
                     </div>
 
                     <div class="text-center">
@@ -569,10 +603,16 @@ document.querySelectorAll('.view-receipt-btn').forEach(btn => {
         const items = this.getAttribute('data-items');
         const amount = this.getAttribute('data-amount');
         const date = this.getAttribute('data-date');
+        const dueDateStr = this.getAttribute('data-due');
 
         document.getElementById('receiptCustomerName').innerText = name;
         document.getElementById('receiptTotal').innerText = '₱' + parseFloat(amount).toLocaleString(undefined, {minimumFractionDigits: 2});
         document.getElementById('receiptDate').innerText = date;
+
+        // Use stored due date for receipt
+        const dueDateObj = new Date(dueDateStr);
+        const dueDateFormatted = dueDateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        document.getElementById('receiptDueDate').innerText = dueDateFormatted;
 
         const itemsContainer = document.getElementById('receiptItems');
         itemsContainer.innerHTML = '';
