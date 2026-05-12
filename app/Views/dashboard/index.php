@@ -134,9 +134,18 @@
 
     <div class="row mt-5">
         <div class="col-md-8">
-            <div class="p-5 text-center bg-white rounded-4 border border-dashed border-2 opacity-50">
-                <i class="fas fa-chart-line fa-3x mb-3 text-muted"></i>
-                <h5 class="text-muted">Sales Analytics chart will appear here</h5>
+            <div class="p-4 bg-white rounded-4 shadow-sm h-100">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h6 class="fw-bold mb-0"><i class="fas fa-chart-line me-2 text-primary"></i>Sales Analytics</h6>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button type="button" class="btn btn-outline-primary active" id="btnDaily">Daily</button>
+                        <button type="button" class="btn btn-outline-primary" id="btnWeekly">Weekly</button>
+                        <button type="button" class="btn btn-outline-primary" id="btnMonthly">Monthly</button>
+                    </div>
+                </div>
+                <div style="height: 300px;">
+                    <canvas id="salesChart"></canvas>
+                </div>
             </div>
         </div>
         <div class="col-md-4">
@@ -149,10 +158,127 @@
                     <a href="<?= base_url('inventory/add') ?>" class="btn btn-light text-start p-3 rounded-3 border">
                         <i class="fas fa-plus me-2"></i> New Product
                     </a>
+                    <a href="<?= base_url('listahan') ?>" class="btn btn-light text-start p-3 rounded-3 border">
+                        <i class="fas fa-book me-2"></i> View Listahan
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const dailyData = <?= json_encode($daily_sales) ?>;
+    const weeklyData = <?= json_encode($weekly_sales) ?>;
+    const monthlyData = <?= json_encode($monthly_sales) ?>;
+
+    let currentChart = null;
+
+    function initChart(labels, data, title) {
+        const ctx = document.getElementById('salesChart').getContext('2d');
+        
+        if (currentChart) {
+            currentChart.destroy();
+        }
+
+        currentChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Sales (₱)',
+                    data: data,
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 3,
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: '#3b82f6',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(context) {
+                                return 'Revenue: ₱' + context.parsed.y.toLocaleString();
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            drawBorder: false,
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return '₱' + value.toLocaleString();
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function showDaily() {
+        const labels = dailyData.map(d => {
+            const date = new Date(d.date);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        });
+        const data = dailyData.map(d => d.total);
+        initChart(labels, data, 'Daily Sales');
+        setActiveButton('btnDaily');
+    }
+
+    function showWeekly() {
+        const labels = weeklyData.map(d => 'Week ' + d.week.toString().slice(-2));
+        const data = weeklyData.map(d => d.total);
+        initChart(labels, data, 'Weekly Sales');
+        setActiveButton('btnWeekly');
+    }
+
+    function showMonthly() {
+        const labels = monthlyData.map(d => {
+            const date = new Date(d.month + '-01');
+            return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+        });
+        const data = monthlyData.map(d => d.total);
+        initChart(labels, data, 'Monthly Sales');
+        setActiveButton('btnMonthly');
+    }
+
+    function setActiveButton(id) {
+        document.querySelectorAll('.btn-group .btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    document.getElementById('btnDaily').addEventListener('click', showDaily);
+    document.getElementById('btnWeekly').addEventListener('click', showWeekly);
+    document.getElementById('btnMonthly').addEventListener('click', showMonthly);
+
+    // Initial load
+    showDaily();
+</script>
 <?= $this->endSection() ?>

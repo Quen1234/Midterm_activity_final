@@ -404,7 +404,7 @@
                 <div class="receipt-container bg-white p-4" id="printableReceipt">
                     <div class="text-center mb-4">
                         <h5 class="fw-bold mb-0">NANAY LIVY'S STORE</h5>
-                        <small class="text-muted">Brgy. Receipt, City Hall</small>
+                        <small class="text-muted">VALID RECEIPT</small>
                         <hr class="my-3 border-dashed">
                     </div>
                     
@@ -450,20 +450,41 @@
         border-top: 1px dashed #dee2e6;
     }
     @media print {
-        body * {
-            visibility: hidden;
+        @page {
+            margin: 0;
+            size: auto;
         }
-        #printableReceipt, #printableReceipt * {
-            visibility: visible;
+        body {
+            visibility: hidden;
+            background: white !important;
         }
         #printableReceipt {
-            position: absolute;
+            visibility: visible;
+            position: fixed;
             left: 0;
             top: 0;
             width: 100%;
+            margin: 0;
+            padding: 20px;
+            background: white !important;
         }
-        .modal-footer {
-            display: none;
+        #printableReceipt * {
+            visibility: visible;
+        }
+        .modal-footer, .btn-close, .modal-header, .btn {
+            display: none !important;
+        }
+        .modal {
+            position: absolute;
+            left: 0;
+            top: 0;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+        .modal-content {
+            border: none !important;
+            box-shadow: none !important;
         }
     }
 </style>

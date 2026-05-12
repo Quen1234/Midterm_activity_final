@@ -320,7 +320,8 @@
                                     </button>
                                     <button class="btn btn-sm btn-outline-danger rounded-pill px-3 settle-btn" 
                                             data-id="<?= $item['id'] ?>"
-                                            data-name="<?= esc($item['customer_name']) ?>">
+                                            data-name="<?= esc($item['customer_name']) ?>"
+                                            data-amount="<?= $item['amount'] ?>">
                                         <i class="bi bi-check2-circle me-1"></i> Settle
                                     </button>
                                 </div>
@@ -408,14 +409,47 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body text-center p-4">
-                <h5 class="fw-bold">Settle Debt?</h5>
-                <p class="text-muted mb-0">Mark <strong id="settleCustomerName"></strong>'s debt as paid? This action cannot be undone.</p>
+                <h5 class="fw-bold mb-3">Settle Debt?</h5>
+                <p class="text-muted mb-4">Mark <strong id="settleCustomerName"></strong>'s debt as paid?</p>
+                
+                <div class="text-start mb-3">
+                    <label class="form-label fw-bold small text-uppercase text-muted">Select Payment Mode</label>
+                    <div class="row g-2">
+                        <div class="col-4">
+                            <input type="radio" class="btn-check" name="paymentMethod" id="settleCash" value="cash" checked onchange="togglePartialInput()">
+                            <label class="btn btn-outline-primary w-100 py-2 rounded-3" for="settleCash">
+                                <i class="bi bi-cash-stack d-block mb-1"></i> Cash
+                            </label>
+                        </div>
+                        <div class="col-4">
+                            <input type="radio" class="btn-check" name="paymentMethod" id="settleGcash" value="gcash" onchange="togglePartialInput()">
+                            <label class="btn btn-outline-primary w-100 py-2 rounded-3" for="settleGcash">
+                                <i class="bi bi-phone d-block mb-1"></i> GCash
+                            </label>
+                        </div>
+                        <div class="col-4">
+                            <input type="radio" class="btn-check" name="paymentMethod" id="settlePartial" value="partial" onchange="togglePartialInput()">
+                            <label class="btn btn-outline-primary w-100 py-2 rounded-3" for="settlePartial">
+                                <i class="bi bi-p-square d-block mb-1"></i> Partial
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="partialSettleSection" style="display: none;" class="text-start mb-3">
+                    <label for="settleAmount" class="form-label fw-bold small text-uppercase text-muted">Amount to Pay</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-0">₱</span>
+                        <input type="number" class="form-control border-start-0" id="settleAmount" placeholder="0.00" step="0.01">
+                    </div>
+                    <small class="text-muted mt-1 d-block">Current Debt: <span id="currentDebtDisplay" class="fw-bold">₱0.00</span></small>
+                </div>
             </div>
             <div class="modal-footer border-0 justify-content-center pb-4">
                 <button type="button" class="btn btn-light btn-pill px-4" data-bs-dismiss="modal">Cancel</button>
-                <a href="#" id="confirmSettleBtn" class="btn btn-dark btn-pill px-4">
+                <button type="button" id="confirmSettleBtn" class="btn btn-dark btn-pill px-4">
                     <i class="bi bi-check2-circle me-2"></i> Confirm Settle
-                </a>
+                </button>
             </div>
         </div>
     </div>
@@ -429,7 +463,7 @@
                 <div class="receipt-container bg-white p-4" id="printableReceipt">
                     <div class="text-center mb-4">
                         <h5 class="fw-bold mb-0">NANAY LIVY'S STORE</h5>
-                        <small class="text-muted">Brgy. Receipt, City Hall</small>
+                        <small class="text-muted">VALID RECEIPT</small>
                         <hr class="my-3 border-dashed">
                     </div>
                     
@@ -478,20 +512,41 @@
         border-top: 1px dashed #dee2e6;
     }
     @media print {
-        body * {
-            visibility: hidden;
+        @page {
+            margin: 0;
+            size: auto;
         }
-        #printableReceipt, #printableReceipt * {
-            visibility: visible;
+        body {
+            visibility: hidden;
+            background: white !important;
         }
         #printableReceipt {
-            position: absolute;
+            visibility: visible;
+            position: fixed;
             left: 0;
             top: 0;
             width: 100%;
+            margin: 0;
+            padding: 20px;
+            background: white !important;
         }
-        .modal-footer {
-            display: none;
+        #printableReceipt * {
+            visibility: visible;
+        }
+        .modal-footer, .btn-close, .modal-header, .btn {
+            display: none !important;
+        }
+        .modal {
+            position: absolute;
+            left: 0;
+            top: 0;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+        .modal-content {
+            border: none !important;
+            box-shadow: none !important;
         }
     }
 </style>
@@ -540,14 +595,52 @@ document.querySelectorAll('.view-receipt-btn').forEach(btn => {
 });
 
 // Settlement confirmation
+let settleId = null;
+let currentDebt = 0;
+
+function togglePartialInput() {
+    const isPartial = document.getElementById('settlePartial').checked;
+    document.getElementById('partialSettleSection').style.display = isPartial ? 'block' : 'none';
+}
+
 document.querySelectorAll('.settle-btn').forEach(btn => {
     btn.addEventListener('click', function() {
-        let id = this.getAttribute('data-id');
+        settleId = this.getAttribute('data-id');
         let name = this.getAttribute('data-name');
+        currentDebt = parseFloat(this.getAttribute('data-amount'));
+        
         document.getElementById('settleCustomerName').innerText = name;
-        document.getElementById('confirmSettleBtn').setAttribute('href', '/listahan/delete/' + id);
+        document.getElementById('currentDebtDisplay').innerText = '₱' + currentDebt.toLocaleString(undefined, {minimumFractionDigits: 2});
+        document.getElementById('settleAmount').value = '';
+        
+        // Reset radio buttons
+        document.getElementById('settleCash').checked = true;
+        togglePartialInput();
+        
         new bootstrap.Modal(document.getElementById('settleModal')).show();
     });
+});
+
+document.getElementById('confirmSettleBtn').addEventListener('click', function() {
+    if (!settleId) return;
+    
+    const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+    let url = `/listahan/settle/${settleId}?method=${paymentMethod}`;
+    
+    if (paymentMethod === 'partial') {
+        const amountToPay = parseFloat(document.getElementById('settleAmount').value);
+        if (isNaN(amountToPay) || amountToPay <= 0) {
+            alert('Please enter a valid amount to pay.');
+            return;
+        }
+        if (amountToPay > currentDebt) {
+            alert('Amount to pay cannot be greater than current debt.');
+            return;
+        }
+        url += `&amount=${amountToPay}`;
+    }
+    
+    window.location.href = url;
 });
 
 // Auto-dismiss alerts

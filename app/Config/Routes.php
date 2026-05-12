@@ -44,6 +44,7 @@ $routes->post('/users/update/(:num)', 'UserController::update/$1'); // Updates u
 $routes->get('/users/delete/(:num)', 'UserController::delete/$1');  // Deletes user from DB based on ID
 $routes->get('listahan', 'Listahan::index');
 $routes->post('listahan/store', 'Listahan::store');
+$routes->get('listahan/settle/(:num)', 'Listahan::settle/$1');
 $routes->get('listahan/delete/(:num)', 'Listahan::delete/$1');
 $routes->get('inventory', 'Inventory::index');
 $routes->get('inventory/add', 'Inventory::add');
