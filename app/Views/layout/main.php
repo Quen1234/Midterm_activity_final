@@ -25,14 +25,15 @@
 
         body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background-color: #f8f9fa;
+            background: linear-gradient(135deg, #f0f2f5 0%, #e2e8f0 100%);
             overflow-x: hidden;
+            min-height: 100vh;
         }
 
         /* Sidebar Styling */
         .sidebar {
             height: 100vh;
-            background: linear-gradient(180deg, var(--sidebar-bg) 0%, #1a1a2e 100%);
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
             color: white;
             position: fixed;
             left: 0;
@@ -41,56 +42,60 @@
             z-index: 1001;
             transition: all var(--transition-speed);
             overflow-y: auto;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
         }
         
         .sidebar-brand {
-            padding: 2rem 1rem;
-            text-align: center;
+            padding: 2.5rem 1.5rem;
+            text-align: left;
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
         .sidebar-brand h3 {
-            font-size: 1.4rem;
-            font-weight: 700;
+            font-size: 1.5rem;
+            font-weight: 800;
             background: linear-gradient(135deg, #fff 30%, #4361ee);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin-bottom: 0.2rem;
         }
 
         /* Navigation */
-        .sidebar-nav { padding: 1rem 0.75rem; }
+        .sidebar-nav { padding: 1.5rem 1rem; }
 
         .nav-header {
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
-            letter-spacing: 1.2px;
-            color: #6c757d;
-            padding: 1.5rem 1rem 0.5rem;
+            letter-spacing: 1.5px;
+            color: rgba(255, 255, 255, 0.4);
+            padding: 1.5rem 1rem 0.75rem;
             font-weight: 700;
         }
 
         .sidebar-nav .nav-link {
-            color: #adb5bd;
-            padding: 0.8rem 1rem;
+            color: rgba(255, 255, 255, 0.6);
+            padding: 0.9rem 1.25rem;
             display: flex;
             align-items: center;
-            gap: 12px;
-            border-radius: 8px;
-            transition: all 0.2s;
-            font-size: 0.95rem;
-            margin-bottom: 4px;
+            gap: 14px;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 6px;
         }
 
         .sidebar-nav .nav-link:hover {
             color: #fff;
-            background: rgba(255, 255, 255, 0.05);
-            transform: translateX(4px);
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(5px);
         }
 
         .sidebar-nav .nav-link.active {
             color: #fff;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            box-shadow: 0 10px 20px -5px rgba(67, 97, 238, 0.4);
+            font-weight: 600;
         }
 
         /* Main Content Area */
@@ -103,10 +108,12 @@
         }
 
         .top-navbar {
-            height: 70px;
-            background: #fff;
-            border-bottom: 1px solid #eef0f3;
-            padding: 0 1.5rem;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 0 2rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -116,22 +123,38 @@
         }
 
         .page-content {
-            padding: 1.5rem;
-            flex: 1; /* Pushes footer to bottom */
-            animation: fadeIn 0.4s ease-out;
+            padding: 2.5rem;
+            flex: 1;
+            animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Glass Cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
         }
 
         /* Profile Dropdown */
         .user-avatar {
-            width: 40px;
-            height: 40px;
-            background: #eef2ff;
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #eef2ff, #e0e7ff);
             color: var(--primary-color);
-            border-radius: 10px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.15);
         }
 
         /* Footer */
@@ -175,7 +198,7 @@
 
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand">
-            <h3><i class="fas fa-rocket me-2"></i>Nanay Livy's</h3>
+            <h3><i class="fas fa-store me-2"></i>Nanay Livy's</h3>
             <small class="text-uppercase tracking-wider">Store Management</small>
         </div>
         
@@ -225,19 +248,32 @@
             <?php if(strpos(current_url(), 'listahan') !== false): ?>
                 <div class="nav-header">Due Reminders</div>
                 <div class="px-3 py-2">
-                    <div class="bg-white bg-opacity-10 rounded-4 p-3 border border-white border-opacity-10">
-                        <label class="small fw-bold text-white-50 mb-2 d-block">
-                            <i class="bi bi-envelope me-1"></i> Send Due Notice
-                        </label>
-                        <select id="dueCustomerSelect" class="form-select form-select-sm bg-dark text-white border-secondary mb-2 rounded-3 shadow-none">
-                            <option value="">Select Customer</option>
-                            <!-- Customers will be populated by JS -->
-                        </select>
-                        <input type="email" id="dueCustomerEmail" class="form-control form-control-sm bg-dark text-white border-secondary mb-2 rounded-3 shadow-none" placeholder="Enter customer email">
-                        <button type="button" id="sendDueNoticeBtn" class="btn btn-primary btn-sm w-100 rounded-3 fw-bold">
-                            <i class="bi bi-send-fill me-1"></i> Send Notice
+                    <div class="rounded-4 p-3 border border-white border-opacity-10 shadow-lg" style="background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px);">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="rounded-3 bg-primary d-flex align-items-center justify-content-center shadow-sm" style="width: 35px; height: 35px; background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);">
+                                <i class="bi bi-bell-fill text-white small"></i>
+                            </div>
+                            <div>
+                                <h6 class="text-white fw-bold mb-0" style="font-size: 0.85rem;">Due Notice</h6>
+                                <p class="text-white-50 mb-0" style="font-size: 0.65rem;">Send reminders easily</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-2">
+                            <select id="dueCustomerSelect" class="form-select form-select-sm border-0 text-white mb-2 rounded-3 shadow-none py-2 px-3" style="background: rgba(255, 255, 255, 0.15); font-size: 0.8rem; color-scheme: dark;">
+                                <option value="" style="background: #1e293b; color: white;">Select Customer</option>
+                                <!-- Customers will be populated by JS -->
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <input type="email" id="dueCustomerEmail" class="form-control form-control-sm border-0 text-white rounded-3 shadow-none py-2 px-3" placeholder="customer@email.com" style="background: rgba(255, 255, 255, 0.08); font-size: 0.8rem;">
+                        </div>
+
+                        <button type="button" id="sendDueNoticeBtn" class="btn btn-primary btn-sm w-100 rounded-3 fw-bold py-2 shadow-lg border-0 transition-all" style="background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%); font-size: 0.85rem;">
+                            <i class="bi bi-send-fill me-2"></i>Send Notice
                         </button>
-                        <div id="emailStatusMsg" class="mt-2 small" style="display:none;"></div>
+                        <div id="emailStatusMsg" class="mt-2 small text-center" style="display:none;"></div>
                     </div>
                 </div>
             <?php endif; ?>
@@ -263,11 +299,12 @@
                         <?= strtoupper(substr(session()->get('username') ?? 'U', 0, 1)) ?>
                     </div>
                 </div>
-                <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm mt-3">
-                    <li><h6 class="dropdown-header">Manage Account</h6></li>
-                    <li><a class="dropdown-item" href="<?= base_url('profile') ?>"><i class="fas fa-user-cog me-2"></i> Profile Settings</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-danger" href="<?= base_url('logout') ?>"><i class="fas fa-sign-out-alt me-2"></i> Sign Out</a></li>
+                <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg mt-3 p-2 rounded-4">
+                    <li><h6 class="dropdown-header text-uppercase small letter-spacing-1 fw-bold opacity-50 py-3">Account Settings</h6></li>
+                    <li><a class="dropdown-item rounded-3 py-2 px-3" href="<?= base_url('profile') ?>"><i class="fas fa-user-circle me-2 text-primary"></i> My Profile</a></li>
+                    <li><a class="dropdown-item rounded-3 py-2 px-3" href="<?= base_url('profile') ?>"><i class="fas fa-key me-2 text-primary"></i> Password Security</a></li>
+                    <li><hr class="dropdown-divider opacity-50 mx-2"></li>
+                    <li><a class="dropdown-item text-danger rounded-3 py-2 px-3" href="<?= base_url('logout') ?>"><i class="fas fa-power-off me-2"></i> Sign Out</a></li>
                 </ul>
             </div>
         </header>

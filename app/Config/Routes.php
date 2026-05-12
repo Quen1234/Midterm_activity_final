@@ -53,3 +53,7 @@ $routes->get('inventory/edit/(:num)', 'Inventory::edit/$1'); // Added edit route
 $routes->post('inventory/store', 'Inventory::store');
 $routes->post('inventory/update/(:num)', 'Inventory::update/$1'); // Added update route
 $routes->get('inventory/delete/(:num)', 'Inventory::delete/$1');
+
+// Profile Routes
+$routes->get('/profile', 'Profile::index');
+$routes->post('/profile/update', 'Profile::update');
