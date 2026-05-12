@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\ListahanModel;
 use App\Models\TransactionModel;
+use App\Models\ActivityLogModel;
 
 class Listahan extends BaseController
 {
@@ -37,12 +38,14 @@ class Listahan extends BaseController
 
         $model = new ListahanModel();
         $data['listahan'] = $model->orderBy('created_at', 'DESC')->findAll();
+        $data['title'] = 'Digital Listahan';
         return view('listahan/index', $data);
     }
 
     public function store()
     {
         $model = new ListahanModel();
+        $logModel = new ActivityLogModel();
         
         // Use custom due date if provided, otherwise default to 7 days from now
         $dueDate = $this->request->getPost('due_date');
@@ -50,14 +53,20 @@ class Listahan extends BaseController
             $dueDate = date('Y-m-d', strtotime('+7 days'));
         }
 
+        $customerName = $this->request->getPost('customer_name');
+        $amount = $this->request->getPost('amount');
+
         $model->save([
-            'customer_name' => $this->request->getPost('customer_name'),
+            'customer_name' => $customerName,
             'email'         => $this->request->getPost('email'),
             'items'         => $this->request->getPost('items'),
-            'amount'        => $this->request->getPost('amount'),
+            'amount'        => $amount,
             'due_date'      => $dueDate,
             'status'        => 'unpaid'
         ]);
+
+        $logModel->log('Listahan Add', "Added new credit record for {$customerName} (₱{$amount})");
+
         return redirect()->to('/listahan')->with('status', 'Added successfully!');
     }
 
@@ -65,6 +74,7 @@ class Listahan extends BaseController
     {
         $listahanModel = new ListahanModel();
         $transactionModel = new TransactionModel();
+        $logModel = new ActivityLogModel();
         
         $debt = $listahanModel->find($id);
         if ($debt) {
@@ -84,10 +94,16 @@ class Listahan extends BaseController
                 // Update the remaining debt
                 $newAmount = $debt['amount'] - $amountToPay;
                 $listahanModel->update($id, ['amount' => $newAmount]);
+                
+                $logModel->log('Debt Partial Payment', "Received ₱{$amountToPay} from {$debt['customer_name']}. Remaining: ₱{$newAmount}");
+                
                 return redirect()->to('/listahan')->with('status', 'Partial payment of ₱' . number_format($amountToPay, 2) . ' received. Remaining debt: ₱' . number_format($newAmount, 2));
             } else {
                 // Full settlement
                 $listahanModel->delete($id);
+                
+                $logModel->log('Debt Settled', "Full payment received from {$debt['customer_name']} via {$method}");
+                
                 return redirect()->to('/listahan')->with('status', 'Debt settled and recorded successfully!');
             }
         }
@@ -98,7 +114,14 @@ class Listahan extends BaseController
     public function delete($id)
     {
         $model = new ListahanModel();
-        $model->delete($id);
+        $logModel = new ActivityLogModel();
+        
+        $debt = $model->find($id);
+        if ($debt) {
+            $model->delete($id);
+            $logModel->log('Debt Record Deleted', "Deleted credit record for {$debt['customer_name']}");
+        }
+
         return redirect()->to('/listahan')->with('status', 'Deleted successfully!');
     }
 
@@ -115,10 +138,11 @@ class Listahan extends BaseController
         $dueDate = $json->due_date;
 
         $emailService = \Config\Services::email();
+        $logModel = new ActivityLogModel();
 
         // Note: In a real production environment, you would configure SMTP in app/Config/Email.php
         $emailService->setTo($email);
-        $emailService->setFrom('noreply@nanaylivys.com', "Nanay Livy's Store");
+        $emailService->setFrom('javyenkim@gmail.com', "Nanay Livy's Store");
         $emailService->setSubject('Payment Reminder - Nanay Livy\'s Store');
         
         $message = "
@@ -138,6 +162,7 @@ class Listahan extends BaseController
         $emailService->setMessage($message);
 
         if ($emailService->send()) {
+            $logModel->log('Email Notice Sent', "Sent payment reminder to {$name} ({$email})");
             return $this->response->setJSON(['status' => 'success']);
         } else {
             // Log error for debugging

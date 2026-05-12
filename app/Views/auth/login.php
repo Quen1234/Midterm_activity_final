@@ -224,7 +224,7 @@
                     <a href="<?= base_url('/register') ?>" class="register-link">Create an Account</a>
                 </div>
                 
-                <p class="text-center text-muted mt-4 small opacity-50">&copy; 2024 Nanay Livy's Store</p>
+                <p class="text-center text-muted mt-4 small opacity-50">&copy; 2026 Nanay Livy's Store</p>
             </div>
         </div>
     </div>

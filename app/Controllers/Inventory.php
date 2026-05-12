@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\InventoryModel;
+use App\Models\ActivityLogModel;
 
 class Inventory extends BaseController
 {
@@ -22,6 +23,7 @@ class Inventory extends BaseController
     public function store()
     {
         $model = new InventoryModel();
+        $logModel = new ActivityLogModel();
 
         $data = [
             'barcode'   => $this->request->getPost('barcode'),
@@ -32,13 +34,20 @@ class Inventory extends BaseController
         ];
 
         $model->save($data);
+        $logModel->log('Inventory Add', "Added new product: {$data['item_name']} (Stock: {$data['stock']})");
         return redirect()->to('/inventory')->with('status', 'Item saved successfully!');
     }
 
     public function delete($id)
     {
         $model = new InventoryModel();
-        $model->delete($id);
+        $logModel = new ActivityLogModel();
+        
+        $item = $model->find($id);
+        if ($item) {
+            $model->delete($id);
+            $logModel->log('Inventory Delete', "Deleted product: {$item['item_name']}");
+        }
         return redirect()->to('/inventory')->with('status', 'Item deleted!');
     }
 
@@ -57,6 +66,7 @@ class Inventory extends BaseController
     public function update($id)
     {
         $model = new InventoryModel();
+        $logModel = new ActivityLogModel();
         
         $data = [
             'barcode'   => $this->request->getPost('barcode'),
@@ -67,6 +77,7 @@ class Inventory extends BaseController
         ];
 
         $model->update($id, $data);
+        $logModel->log('Inventory Update', "Updated product details for: {$data['item_name']}");
         return redirect()->to('/inventory')->with('status', 'Item updated successfully!');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
+use App\Models\ActivityLogModel;
 
 class Auth extends BaseController
 {
@@ -17,6 +18,7 @@ class Auth extends BaseController
     {
         $session = session();
         $model = new UserModel();
+        $logModel = new ActivityLogModel();
         $username = $this->request->getVar('username');
         $password = $this->request->getVar('password');
 
@@ -33,6 +35,9 @@ class Auth extends BaseController
                     'logged_in' => TRUE
                 ];
                 $session->set($ses_data);
+                
+                $logModel->log('Login', 'User successfully logged into the system');
+                
                 return redirect()->to('/dashboard');
             } else {
                 $session->setFlashdata('msg', 'Wrong Password');
@@ -54,6 +59,7 @@ class Auth extends BaseController
     public function registerProcess()
     {
         $model = new UserModel();
+        $logModel = new ActivityLogModel();
         
         $username = $this->request->getVar('username');
         $password = $this->request->getVar('password');
@@ -81,6 +87,8 @@ class Auth extends BaseController
             'role'     => $role
         ]);
 
+        $logModel->log('Registration', "New user account created: {$username} with role {$role}");
+
         session()->setFlashdata('msg', 'Account created! You can now login.');
         return redirect()->to('/');
     }
@@ -90,6 +98,10 @@ class Auth extends BaseController
     public function logout()
     {
         $session = session();
+        $logModel = new ActivityLogModel();
+        
+        $logModel->log('Logout', 'User logged out of the system');
+        
         $session->destroy();
         return redirect()->to('/');
     }

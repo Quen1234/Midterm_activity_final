@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\InventoryModel;
 use App\Models\ListahanModel;
 use App\Models\TransactionModel;
+use App\Models\ActivityLogModel;
 
 class Pos extends BaseController
 {
@@ -30,6 +31,7 @@ class Pos extends BaseController
         $inventoryModel = new InventoryModel();
         $listahanModel = new ListahanModel();
         $transactionModel = new TransactionModel();
+        $logModel = new ActivityLogModel();
         $db = \Config\Database::connect();
         
         $db->transStart();
@@ -82,6 +84,10 @@ class Pos extends BaseController
         if ($db->transStatus() === false) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Transaction failed']);
         }
+
+        // Record Activity Log
+        $logDetails = "Sold items to {$json->customer_name} via " . strtoupper($json->payment_method) . " (Total: ₱" . number_format($json->total_amount, 2) . ")";
+        $logModel->log('POS Transaction', $logDetails);
 
         return $this->response->setJSON(['status' => 'success', 'transaction_id' => time()]);
     }

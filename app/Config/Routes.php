@@ -31,7 +31,7 @@ $routes->post('/categories/delete/(:num)', 'Categories::delete/$1'); // Deletes 
 $routes->get('/stock', 'Stock::index');                      // Placeholder
 $routes->post('/stock/update', 'Stock::update');            // Updates stock quantity
 $routes->get('/reports', 'Reports::index');                  // Placeholder
-$routes->get('/audit', 'Audit::index');                      // Placeholder
+$routes->get('/audit', 'Audit::index');                      // View Activity Logs
 
 // ==========================================
 // User Management (CRUD) Routes
