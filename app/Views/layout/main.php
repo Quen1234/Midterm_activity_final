@@ -220,6 +220,27 @@
             <a href="<?= base_url('logout') ?>" class="nav-link text-danger">
                 <i class="fas fa-sign-out-alt"></i> Logout
             </a>
+
+            <!-- Due Date Reminder Section -->
+            <?php if(strpos(current_url(), 'listahan') !== false): ?>
+                <div class="nav-header">Due Reminders</div>
+                <div class="px-3 py-2">
+                    <div class="bg-white bg-opacity-10 rounded-4 p-3 border border-white border-opacity-10">
+                        <label class="small fw-bold text-white-50 mb-2 d-block">
+                            <i class="bi bi-envelope me-1"></i> Send Due Notice
+                        </label>
+                        <select id="dueCustomerSelect" class="form-select form-select-sm bg-dark text-white border-secondary mb-2 rounded-3 shadow-none">
+                            <option value="">Select Customer</option>
+                            <!-- Customers will be populated by JS -->
+                        </select>
+                        <input type="email" id="dueCustomerEmail" class="form-control form-control-sm bg-dark text-white border-secondary mb-2 rounded-3 shadow-none" placeholder="Enter customer email">
+                        <button type="button" id="sendDueNoticeBtn" class="btn btn-primary btn-sm w-100 rounded-3 fw-bold">
+                            <i class="bi bi-send-fill me-1"></i> Send Notice
+                        </button>
+                        <div id="emailStatusMsg" class="mt-2 small" style="display:none;"></div>
+                    </div>
+                </div>
+            <?php endif; ?>
         </nav>
     </aside>
 

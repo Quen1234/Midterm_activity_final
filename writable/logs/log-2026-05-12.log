@@ -702,3 +702,448 @@ DEBUG - 2026-05-12 16:07:40 --> Session: Class initialized using 'CodeIgniter\Se
 DEBUG - 2026-05-12 16:07:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
 DEBUG - 2026-05-12 16:08:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
 DEBUG - 2026-05-12 16:08:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 16:31:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 16:31:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 16:32:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 16:32:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-05-12 16:32:59 --> Email: sendWithMail threw ErrorException: mail(): Failed to connect to mailserver at &quot;localhost&quot; port 25, verify your &quot;SMTP&quot; and &quot;smtp_port&quot; setting in php.ini or use ini_set() in C:\xampp\htdocs\Midterm_activity_final\system\Email\Email.php:1776
+Stack trace:
+#0 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'mail(): Failed ...', 'C:\\xampp\\htdocs...', 1776)
+#1 C:\xampp\htdocs\Midterm_activity_final\system\Email\Email.php(1776): mail('javyenkim@gmail...', '=?UTF-8?Q?Payme...', '\r\n            <...', 'Date: Tue, 12 M...', '-f noreply@nana...')
+#2 C:\xampp\htdocs\Midterm_activity_final\system\Email\Email.php(1708): CodeIgniter\Email\Email->sendWithMail()
+#3 C:\xampp\htdocs\Midterm_activity_final\system\Email\Email.php(1602): CodeIgniter\Email\Email->spoolEmail()
+#4 C:\xampp\htdocs\Midterm_activity_final\app\Controllers\Listahan.php(126): CodeIgniter\Email\Email->send(false)
+#5 C:\xampp\htdocs\Midterm_activity_final\system\CodeIgniter.php(951): App\Controllers\Listahan->sendNotice()
+#6 C:\xampp\htdocs\Midterm_activity_final\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Listahan))
+#7 C:\xampp\htdocs\Midterm_activity_final\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\xampp\htdocs\Midterm_activity_final\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#9 C:\xampp\htdocs\Midterm_activity_final\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#10 C:\xampp\htdocs\Midterm_activity_final\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#11 C:\xampp\htdocs\Midterm_activity_final\system\rewrite.php(44): require_once('C:\\xampp\\htdocs...')
+#12 {main}
+ERROR - 2026-05-12 16:32:59 --> Email: Unable to send email using PHP mail(). Your server might not be configured to send mail using this method.
+ERROR - 2026-05-12 16:32:59 --> 
+ERROR - 2026-05-12 16:34:06 --> Email: sendWithMail threw ErrorException: mail(): Failed to connect to mailserver at &quot;localhost&quot; port 25, verify your &quot;SMTP&quot; and &quot;smtp_port&quot; setting in php.ini or use ini_set() in C:\xampp\htdocs\Midterm_activity_final\system\Email\Email.php:1776
+Stack trace:
+#0 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'mail(): Failed ...', 'C:\\xampp\\htdocs...', 1776)
+#1 C:\xampp\htdocs\Midterm_activity_final\system\Email\Email.php(1776): mail('javyenkim@gmail...', '=?UTF-8?Q?Payme...', '\r\n            <...', 'Date: Tue, 12 M...', '-f noreply@nana...')
+#2 C:\xampp\htdocs\Midterm_activity_final\system\Email\Email.php(1708): CodeIgniter\Email\Email->sendWithMail()
+#3 C:\xampp\htdocs\Midterm_activity_final\system\Email\Email.php(1602): CodeIgniter\Email\Email->spoolEmail()
+#4 C:\xampp\htdocs\Midterm_activity_final\app\Controllers\Listahan.php(126): CodeIgniter\Email\Email->send(false)
+#5 C:\xampp\htdocs\Midterm_activity_final\system\CodeIgniter.php(951): App\Controllers\Listahan->sendNotice()
+#6 C:\xampp\htdocs\Midterm_activity_final\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Listahan))
+#7 C:\xampp\htdocs\Midterm_activity_final\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\xampp\htdocs\Midterm_activity_final\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#9 C:\xampp\htdocs\Midterm_activity_final\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#10 C:\xampp\htdocs\Midterm_activity_final\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#11 C:\xampp\htdocs\Midterm_activity_final\system\rewrite.php(44): require_once('C:\\xampp\\htdocs...')
+#12 {main}
+ERROR - 2026-05-12 16:34:06 --> Email: Unable to send email using PHP mail(). Your server might not be configured to send mail using this method.
+ERROR - 2026-05-12 16:34:06 --> 
+DEBUG - 2026-05-12 16:37:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 16:39:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 16:39:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 16:40:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 16:40:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-05-12 16:41:07 --> Email: sendWithMail threw ErrorException: mail(): Failed to connect to mailserver at &quot;localhost&quot; port 25, verify your &quot;SMTP&quot; and &quot;smtp_port&quot; setting in php.ini or use ini_set() in C:\xampp\htdocs\Midterm_activity_final\system\Email\Email.php:1776
+Stack trace:
+#0 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'mail(): Failed ...', 'C:\\xampp\\htdocs...', 1776)
+#1 C:\xampp\htdocs\Midterm_activity_final\system\Email\Email.php(1776): mail('javyenkim@gmail...', '=?UTF-8?Q?Payme...', '\r\n            <...', 'Date: Tue, 12 M...', '-f noreply@nana...')
+#2 C:\xampp\htdocs\Midterm_activity_final\system\Email\Email.php(1708): CodeIgniter\Email\Email->sendWithMail()
+#3 C:\xampp\htdocs\Midterm_activity_final\system\Email\Email.php(1602): CodeIgniter\Email\Email->spoolEmail()
+#4 C:\xampp\htdocs\Midterm_activity_final\app\Controllers\Listahan.php(140): CodeIgniter\Email\Email->send(false)
+#5 C:\xampp\htdocs\Midterm_activity_final\system\CodeIgniter.php(951): App\Controllers\Listahan->sendNotice()
+#6 C:\xampp\htdocs\Midterm_activity_final\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Listahan))
+#7 C:\xampp\htdocs\Midterm_activity_final\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\xampp\htdocs\Midterm_activity_final\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#9 C:\xampp\htdocs\Midterm_activity_final\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#10 C:\xampp\htdocs\Midterm_activity_final\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#11 C:\xampp\htdocs\Midterm_activity_final\system\rewrite.php(44): require_once('C:\\xampp\\htdocs...')
+#12 {main}
+ERROR - 2026-05-12 16:41:07 --> Email: Unable to send email using PHP mail(). Your server might not be configured to send mail using this method.
+ERROR - 2026-05-12 16:41:07 --> 
+ERROR - 2026-05-12 16:41:30 --> Email: sendWithMail threw ErrorException: mail(): Failed to connect to mailserver at &quot;localhost&quot; port 25, verify your &quot;SMTP&quot; and &quot;smtp_port&quot; setting in php.ini or use ini_set() in C:\xampp\htdocs\Midterm_activity_final\system\Email\Email.php:1776
+Stack trace:
+#0 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'mail(): Failed ...', 'C:\\xampp\\htdocs...', 1776)
+#1 C:\xampp\htdocs\Midterm_activity_final\system\Email\Email.php(1776): mail('javyenkim@gmail...', '=?UTF-8?Q?Payme...', '\r\n            <...', 'Date: Tue, 12 M...', '-f noreply@nana...')
+#2 C:\xampp\htdocs\Midterm_activity_final\system\Email\Email.php(1708): CodeIgniter\Email\Email->sendWithMail()
+#3 C:\xampp\htdocs\Midterm_activity_final\system\Email\Email.php(1602): CodeIgniter\Email\Email->spoolEmail()
+#4 C:\xampp\htdocs\Midterm_activity_final\app\Controllers\Listahan.php(140): CodeIgniter\Email\Email->send(false)
+#5 C:\xampp\htdocs\Midterm_activity_final\system\CodeIgniter.php(951): App\Controllers\Listahan->sendNotice()
+#6 C:\xampp\htdocs\Midterm_activity_final\system\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Listahan))
+#7 C:\xampp\htdocs\Midterm_activity_final\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\xampp\htdocs\Midterm_activity_final\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#9 C:\xampp\htdocs\Midterm_activity_final\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#10 C:\xampp\htdocs\Midterm_activity_final\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#11 C:\xampp\htdocs\Midterm_activity_final\system\rewrite.php(44): require_once('C:\\xampp\\htdocs...')
+#12 {main}
+ERROR - 2026-05-12 16:41:30 --> Email: Unable to send email using PHP mail(). Your server might not be configured to send mail using this method.
+ERROR - 2026-05-12 16:41:30 --> 
+DEBUG - 2026-05-12 16:43:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 16:43:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-05-12 16:43:39 --> Email: Unable to send email using SMTP. Your server might not be configured to send mail using this method.
+ERROR - 2026-05-12 16:43:39 --> 220 smtp.gmail.com ESMTP d2e1a72fcca58-839679c7b92sm23641556b3a.29 - gsmtp
+
+hello: 250-smtp.gmail.com at your service, [175.176.72.137]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+starttls: 220 2.0.0 Ready to start TLS
+
+hello: 250-smtp.gmail.com at your service, [175.176.72.137]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+Failed to authenticate password. Error: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials d2e1a72fcca58-839679c7b92sm23641556b3a.29 - gsmtp
+
+ERROR - 2026-05-12 16:43:39 --> 220 smtp.gmail.com ESMTP d2e1a72fcca58-839679c7b92sm23641556b3a.29 - gsmtp
+<br><pre>hello: 250-smtp.gmail.com at your service, [175.176.72.137]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+</pre><pre>starttls: 220 2.0.0 Ready to start TLS
+</pre><pre>hello: 250-smtp.gmail.com at your service, [175.176.72.137]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+</pre>Failed to authenticate password. Error: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials d2e1a72fcca58-839679c7b92sm23641556b3a.29 - gsmtp
+<br>Unable to send email using SMTP. Your server might not be configured to send mail using this method.<br><pre>Date: Tue, 12 May 2026 16:43:34 +0000
+To: javyenkim@gmail.com
+From: &quot;Nanay Livy\&#039;s Store&quot; &lt;noreply@nanaylivys.com&gt;
+Return-Path: &lt;noreply@nanaylivys.com&gt;
+Subject: =?UTF-8?Q?Payment=20Reminder=20-=20Nanay=20Livy&#039;s=20Store?=
+Reply-To: &lt;noreply@nanaylivys.com&gt;
+User-Agent: CodeIgniter
+X-Sender: noreply@nanaylivys.com
+X-Mailer: CodeIgniter
+X-Priority: 3 (Normal)
+Message-ID: &lt;6a0358b64fa147.80535934@nanaylivys.com&gt;
+Mime-Version: 1.0
+
+</pre>
+ERROR - 2026-05-12 16:44:00 --> Email: Unable to send email using SMTP. Your server might not be configured to send mail using this method.
+ERROR - 2026-05-12 16:44:00 --> 220 smtp.gmail.com ESMTP 98e67ed59e1d1-368ede20a50sm362460a91.3 - gsmtp
+
+hello: 250-smtp.gmail.com at your service, [175.176.72.137]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+starttls: 220 2.0.0 Ready to start TLS
+
+hello: 250-smtp.gmail.com at your service, [175.176.72.137]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+Failed to authenticate password. Error: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 98e67ed59e1d1-368ede20a50sm362460a91.3 - gsmtp
+
+ERROR - 2026-05-12 16:44:00 --> 220 smtp.gmail.com ESMTP 98e67ed59e1d1-368ede20a50sm362460a91.3 - gsmtp
+<br><pre>hello: 250-smtp.gmail.com at your service, [175.176.72.137]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+</pre><pre>starttls: 220 2.0.0 Ready to start TLS
+</pre><pre>hello: 250-smtp.gmail.com at your service, [175.176.72.137]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+</pre>Failed to authenticate password. Error: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 98e67ed59e1d1-368ede20a50sm362460a91.3 - gsmtp
+<br>Unable to send email using SMTP. Your server might not be configured to send mail using this method.<br><pre>Date: Tue, 12 May 2026 16:43:57 +0000
+To: javyenkim@gmail.com
+From: &quot;Nanay Livy\&#039;s Store&quot; &lt;noreply@nanaylivys.com&gt;
+Return-Path: &lt;noreply@nanaylivys.com&gt;
+Subject: =?UTF-8?Q?Payment=20Reminder=20-=20Nanay=20Livy&#039;s=20Store?=
+Reply-To: &lt;noreply@nanaylivys.com&gt;
+User-Agent: CodeIgniter
+X-Sender: noreply@nanaylivys.com
+X-Mailer: CodeIgniter
+X-Priority: 3 (Normal)
+Message-ID: &lt;6a0358cd2b0f77.11492480@nanaylivys.com&gt;
+Mime-Version: 1.0
+
+</pre>
+DEBUG - 2026-05-12 16:47:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-05-12 16:47:52 --> Email: Unable to send email using SMTP. Your server might not be configured to send mail using this method.
+ERROR - 2026-05-12 16:47:52 --> 220 smtp.gmail.com ESMTP d9443c01a7336-2baf1d52f1bsm144218665ad.37 - gsmtp
+
+hello: 250-smtp.gmail.com at your service, [175.176.72.137]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+starttls: 220 2.0.0 Ready to start TLS
+
+hello: 250-smtp.gmail.com at your service, [175.176.72.137]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+Failed to authenticate password. Error: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials d9443c01a7336-2baf1d52f1bsm144218665ad.37 - gsmtp
+
+ERROR - 2026-05-12 16:47:52 --> 220 smtp.gmail.com ESMTP d9443c01a7336-2baf1d52f1bsm144218665ad.37 - gsmtp
+<br><pre>hello: 250-smtp.gmail.com at your service, [175.176.72.137]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+</pre><pre>starttls: 220 2.0.0 Ready to start TLS
+</pre><pre>hello: 250-smtp.gmail.com at your service, [175.176.72.137]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+</pre>Failed to authenticate password. Error: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials d9443c01a7336-2baf1d52f1bsm144218665ad.37 - gsmtp
+<br>Unable to send email using SMTP. Your server might not be configured to send mail using this method.<br><pre>Date: Tue, 12 May 2026 16:47:48 +0000
+To: javyenkim@gmail.com
+From: &quot;Nanay Livy\&#039;s Store&quot; &lt;noreply@nanaylivys.com&gt;
+Return-Path: &lt;noreply@nanaylivys.com&gt;
+Subject: =?UTF-8?Q?Payment=20Reminder=20-=20Nanay=20Livy&#039;s=20Store?=
+Reply-To: &lt;noreply@nanaylivys.com&gt;
+User-Agent: CodeIgniter
+X-Sender: noreply@nanaylivys.com
+X-Mailer: CodeIgniter
+X-Priority: 3 (Normal)
+Message-ID: &lt;6a0359b4c856e1.16490115@nanaylivys.com&gt;
+Mime-Version: 1.0
+
+</pre>
+ERROR - 2026-05-12 16:48:37 --> Email: Unable to send email using SMTP. Your server might not be configured to send mail using this method.
+ERROR - 2026-05-12 16:48:37 --> 220 smtp.gmail.com ESMTP d9443c01a7336-2baf1d40677sm141873195ad.33 - gsmtp
+
+hello: 250-smtp.gmail.com at your service, [175.176.72.137]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+starttls: 220 2.0.0 Ready to start TLS
+
+hello: 250-smtp.gmail.com at your service, [175.176.72.137]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+Failed to authenticate password. Error: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials d9443c01a7336-2baf1d40677sm141873195ad.33 - gsmtp
+
+ERROR - 2026-05-12 16:48:37 --> 220 smtp.gmail.com ESMTP d9443c01a7336-2baf1d40677sm141873195ad.33 - gsmtp
+<br><pre>hello: 250-smtp.gmail.com at your service, [175.176.72.137]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+</pre><pre>starttls: 220 2.0.0 Ready to start TLS
+</pre><pre>hello: 250-smtp.gmail.com at your service, [175.176.72.137]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+</pre>Failed to authenticate password. Error: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials d9443c01a7336-2baf1d40677sm141873195ad.33 - gsmtp
+<br>Unable to send email using SMTP. Your server might not be configured to send mail using this method.<br><pre>Date: Tue, 12 May 2026 16:48:30 +0000
+To: javyenkim@gmail.com
+From: &quot;Nanay Livy\&#039;s Store&quot; &lt;noreply@nanaylivys.com&gt;
+Return-Path: &lt;noreply@nanaylivys.com&gt;
+Subject: =?UTF-8?Q?Payment=20Reminder=20-=20Nanay=20Livy&#039;s=20Store?=
+Reply-To: &lt;noreply@nanaylivys.com&gt;
+User-Agent: CodeIgniter
+X-Sender: noreply@nanaylivys.com
+X-Mailer: CodeIgniter
+X-Priority: 3 (Normal)
+Message-ID: &lt;6a0359de6834d2.33673595@nanaylivys.com&gt;
+Mime-Version: 1.0
+
+</pre>
+DEBUG - 2026-05-12 16:51:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 16:53:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 16:53:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-05-12 16:53:20 --> Email: Unable to send email using SMTP. Your server might not be configured to send mail using this method.
+ERROR - 2026-05-12 16:53:20 --> 220 smtp.gmail.com ESMTP 98e67ed59e1d1-368b04ae9easm1144901a91.8 - gsmtp
+
+hello: 250-smtp.gmail.com at your service, [175.176.72.137]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+starttls: 220 2.0.0 Ready to start TLS
+
+hello: 250-smtp.gmail.com at your service, [175.176.72.137]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+Failed to authenticate password. Error: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 98e67ed59e1d1-368b04ae9easm1144901a91.8 - gsmtp
+
+ERROR - 2026-05-12 16:53:20 --> 220 smtp.gmail.com ESMTP 98e67ed59e1d1-368b04ae9easm1144901a91.8 - gsmtp
+<br><pre>hello: 250-smtp.gmail.com at your service, [175.176.72.137]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+</pre><pre>starttls: 220 2.0.0 Ready to start TLS
+</pre><pre>hello: 250-smtp.gmail.com at your service, [175.176.72.137]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+</pre>Failed to authenticate password. Error: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 98e67ed59e1d1-368b04ae9easm1144901a91.8 - gsmtp
+<br>Unable to send email using SMTP. Your server might not be configured to send mail using this method.<br><pre>Date: Tue, 12 May 2026 16:53:14 +0000
+To: nayeoungi@gmail.com
+From: &quot;Nanay Livy\&#039;s Store&quot; &lt;noreply@nanaylivys.com&gt;
+Return-Path: &lt;noreply@nanaylivys.com&gt;
+Subject: =?UTF-8?Q?Payment=20Reminder=20-=20Nanay=20Livy&#039;s=20Store?=
+Reply-To: &lt;noreply@nanaylivys.com&gt;
+User-Agent: CodeIgniter
+X-Sender: noreply@nanaylivys.com
+X-Mailer: CodeIgniter
+X-Priority: 3 (Normal)
+Message-ID: &lt;6a035afa9bf283.20876512@nanaylivys.com&gt;
+Mime-Version: 1.0
+
+</pre>
+ERROR - 2026-05-12 16:53:52 --> Email: Unable to send email using SMTP. Your server might not be configured to send mail using this method.
+ERROR - 2026-05-12 16:53:52 --> 220 smtp.gmail.com ESMTP d2e1a72fcca58-83967dbf0cesm29548501b3a.46 - gsmtp
+
+hello: 250-smtp.gmail.com at your service, [175.176.72.137]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+starttls: 220 2.0.0 Ready to start TLS
+
+hello: 250-smtp.gmail.com at your service, [175.176.72.137]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+Failed to authenticate password. Error: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials d2e1a72fcca58-83967dbf0cesm29548501b3a.46 - gsmtp
+
+ERROR - 2026-05-12 16:53:52 --> 220 smtp.gmail.com ESMTP d2e1a72fcca58-83967dbf0cesm29548501b3a.46 - gsmtp
+<br><pre>hello: 250-smtp.gmail.com at your service, [175.176.72.137]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+</pre><pre>starttls: 220 2.0.0 Ready to start TLS
+</pre><pre>hello: 250-smtp.gmail.com at your service, [175.176.72.137]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+</pre>Failed to authenticate password. Error: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials d2e1a72fcca58-83967dbf0cesm29548501b3a.46 - gsmtp
+<br>Unable to send email using SMTP. Your server might not be configured to send mail using this method.<br><pre>Date: Tue, 12 May 2026 16:53:48 +0000
+To: javyenkim@gmail.com
+From: &quot;Nanay Livy\&#039;s Store&quot; &lt;noreply@nanaylivys.com&gt;
+Return-Path: &lt;noreply@nanaylivys.com&gt;
+Subject: =?UTF-8?Q?Payment=20Reminder=20-=20Nanay=20Livy&#039;s=20Store?=
+Reply-To: &lt;noreply@nanaylivys.com&gt;
+User-Agent: CodeIgniter
+X-Sender: noreply@nanaylivys.com
+X-Mailer: CodeIgniter
+X-Priority: 3 (Normal)
+Message-ID: &lt;6a035b1c8b7253.40837310@nanaylivys.com&gt;
+Mime-Version: 1.0
+
+</pre>
+DEBUG - 2026-05-12 17:00:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-12 17:00:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.

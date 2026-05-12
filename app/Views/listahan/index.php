@@ -344,6 +344,7 @@
                                     <button class="btn btn-sm btn-outline-danger rounded-pill px-3 settle-btn" 
                                             data-id="<?= $item['id'] ?>"
                                             data-name="<?= esc($item['customer_name']) ?>"
+                                            data-email="<?= esc($item['email'] ?? '') ?>"
                                             data-amount="<?= $item['amount'] ?>">
                                         <i class="bi bi-check2-circle me-1"></i> Settle
                                     </button>
@@ -394,6 +395,12 @@
                         <i class="bi bi-person me-1"></i> Customer Full Name
                     </label>
                     <input type="text" name="customer_name" class="form-control shadow-none" placeholder="e.g., Maria Dela Cruz" required>
+                </div>
+                <div class="mb-3">
+                    <label class="small fw-bold text-muted mb-2">
+                        <i class="bi bi-envelope me-1"></i> Customer Email (Optional)
+                    </label>
+                    <input type="email" name="email" class="form-control shadow-none" placeholder="e.g., maria@email.com">
                 </div>
                 <div class="mb-3">
                     <label class="small fw-bold text-muted mb-2">
@@ -684,12 +691,106 @@ document.getElementById('confirmSettleBtn').addEventListener('click', function()
 });
 
 // Auto-dismiss alerts
-setTimeout(() => {
-    document.querySelectorAll('.alert').forEach(alert => {
-        alert.classList.add('fade');
-        setTimeout(() => alert.remove(), 500);
-    });
-}, 5000);
-</script>
+  setTimeout(() => {
+      document.querySelectorAll('.alert').forEach(alert => {
+          alert.classList.add('fade');
+          setTimeout(() => alert.remove(), 500);
+      });
+  }, 5000);
+
+  // Sidebar Email Logic
+  document.addEventListener('DOMContentLoaded', function() {
+      const customerSelect = document.getElementById('dueCustomerSelect');
+      const emailInput = document.getElementById('dueCustomerEmail');
+      const sendBtn = document.getElementById('sendDueNoticeBtn');
+      const statusMsg = document.getElementById('emailStatusMsg');
+
+      if (customerSelect) {
+          // Populate customers from the table
+          const rows = document.querySelectorAll('.debt-row');
+          rows.forEach(row => {
+              const name = row.querySelector('.fw-semibold').innerText;
+              const amount = row.querySelector('.badge-amount').innerText;
+              const dueDate = row.querySelector('.small.fw-semibold').innerText;
+              const settleBtn = row.querySelector('.settle-btn');
+              const id = settleBtn.getAttribute('data-id');
+              const email = settleBtn.getAttribute('data-email');
+              
+              const option = document.createElement('option');
+              option.value = id;
+              option.setAttribute('data-name', name);
+              option.setAttribute('data-amount', amount);
+              option.setAttribute('data-due', dueDate);
+              option.setAttribute('data-email', email);
+              option.innerText = name;
+              customerSelect.appendChild(option);
+          });
+
+          // Auto-fill email when customer is selected
+          customerSelect.addEventListener('change', function() {
+              const selectedOption = this.options[this.selectedIndex];
+              const email = selectedOption.getAttribute('data-email');
+              emailInput.value = email || '';
+          });
+
+          sendBtn.addEventListener('click', function() {
+              const email = emailInput.value;
+              const selectedOption = customerSelect.options[customerSelect.selectedIndex];
+              
+              if (!selectedOption.value) {
+                  alert('Please select a customer.');
+                  return;
+              }
+              if (!email || !email.includes('@')) {
+                  alert('Please enter a valid email address.');
+                  return;
+              }
+
+              const customerName = selectedOption.getAttribute('data-name');
+              const amount = selectedOption.getAttribute('data-amount');
+              const dueDate = selectedOption.getAttribute('data-due');
+
+              sendBtn.disabled = true;
+              sendBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Sending...';
+              
+              fetch('/listahan/send-notice', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                      'X-Requested-With': 'XMLHttpRequest',
+                      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                  },
+                  body: JSON.stringify({
+                      email: email,
+                      name: customerName,
+                      amount: amount,
+                      due_date: dueDate
+                  })
+              })
+              .then(response => response.json())
+              .then(data => {
+                  statusMsg.style.display = 'block';
+                  if (data.status === 'success') {
+                      statusMsg.className = 'mt-2 small text-success';
+                      statusMsg.innerHTML = '<i class="bi bi-check-circle me-1"></i> Notice sent successfully!';
+                  } else {
+                      statusMsg.className = 'mt-2 small text-danger';
+                      statusMsg.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i> ' + (data.message || 'Failed to send.');
+                  }
+              })
+              .catch(error => {
+                  statusMsg.style.display = 'block';
+                  statusMsg.className = 'mt-2 small text-danger';
+                  statusMsg.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i> Error occurred.';
+              })
+              .finally(() => {
+                  sendBtn.disabled = false;
+                  sendBtn.innerHTML = '<i class="bi bi-send-fill me-1"></i> Send Notice';
+                  setTimeout(() => { statusMsg.style.display = 'none'; }, 5000);
+              });
+          });
+      }
+  });
+ </script>
 
 <?= $this->endSection() ?>

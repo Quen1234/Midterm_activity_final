@@ -46,6 +46,7 @@ $routes->get('listahan', 'Listahan::index');
 $routes->post('listahan/store', 'Listahan::store');
 $routes->get('listahan/settle/(:num)', 'Listahan::settle/$1');
 $routes->get('listahan/delete/(:num)', 'Listahan::delete/$1');
+$routes->post('listahan/send-notice', 'Listahan::sendNotice');
 $routes->get('inventory', 'Inventory::index');
 $routes->get('inventory/add', 'Inventory::add');
 $routes->get('inventory/edit/(:num)', 'Inventory::edit/$1'); // Added edit route
