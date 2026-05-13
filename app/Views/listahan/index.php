@@ -358,6 +358,7 @@
                                             data-id="<?= $item['id'] ?>"
                                             data-name="<?= esc($item['customer_name']) ?>"
                                             data-email="<?= esc($item['email'] ?? '') ?>"
+                                            data-phone="<?= esc($item['phone_number'] ?? '') ?>"
                                             data-amount="<?= $item['amount'] ?>">
                                         <i class="bi bi-check2-circle me-1"></i> Settle
                                     </button>
@@ -414,6 +415,12 @@
                         <i class="bi bi-envelope me-1"></i> Customer Email (Optional)
                     </label>
                     <input type="email" name="email" class="form-control shadow-none" placeholder="e.g., maria@email.com">
+                </div>
+                <div class="mb-3">
+                    <label class="small fw-bold text-muted mb-2">
+                        <i class="bi bi-phone me-1"></i> Customer Phone (Optional)
+                    </label>
+                    <input type="text" name="phone_number" class="form-control shadow-none" placeholder="e.g., 09123456789">
                 </div>
                 <div class="mb-3">
                     <label class="small fw-bold text-muted mb-2">
@@ -715,7 +722,9 @@ document.getElementById('confirmSettleBtn').addEventListener('click', function()
   document.addEventListener('DOMContentLoaded', function() {
       const customerSelect = document.getElementById('dueCustomerSelect');
       const emailInput = document.getElementById('dueCustomerEmail');
+      const phoneInput = document.getElementById('dueCustomerPhone');
       const sendBtn = document.getElementById('sendDueNoticeBtn');
+      const smsBtn = document.getElementById('sendDueSmsBtn');
       const statusMsg = document.getElementById('emailStatusMsg');
 
       if (customerSelect) {
@@ -728,6 +737,7 @@ document.getElementById('confirmSettleBtn').addEventListener('click', function()
               const settleBtn = row.querySelector('.settle-btn');
               const id = settleBtn.getAttribute('data-id');
               const email = settleBtn.getAttribute('data-email');
+              const phone = settleBtn.getAttribute('data-phone');
               
               const option = document.createElement('option');
               option.value = id;
@@ -735,18 +745,48 @@ document.getElementById('confirmSettleBtn').addEventListener('click', function()
               option.setAttribute('data-amount', amount);
               option.setAttribute('data-due', dueDate);
               option.setAttribute('data-email', email);
+              option.setAttribute('data-phone', phone);
               option.style.backgroundColor = '#1e293b';
               option.style.color = 'white';
               option.innerText = name;
               customerSelect.appendChild(option);
           });
 
-          // Auto-fill email when customer is selected
+          // Auto-fill when customer is selected
           customerSelect.addEventListener('change', function() {
               const selectedOption = this.options[this.selectedIndex];
               const email = selectedOption.getAttribute('data-email');
+              const phone = selectedOption.getAttribute('data-phone');
               emailInput.value = email || '';
+              phoneInput.value = phone || '';
           });
+
+          // SMS logic (Standard SMS Protocol)
+           smsBtn.addEventListener('click', function() {
+               const phone = phoneInput.value;
+               const selectedOption = customerSelect.options[customerSelect.selectedIndex];
+               
+               if (!selectedOption.value) {
+                   alert('Please select a customer.');
+                   return;
+               }
+               if (!phone || phone.length < 10) {
+                   alert('Please enter a valid phone number.');
+                   return;
+               }
+
+               const customerName = selectedOption.getAttribute('data-name');
+               const amount = selectedOption.getAttribute('data-amount');
+               const dueDate = selectedOption.getAttribute('data-due');
+
+               const message = `Hi ${customerName}, this is a reminder from Nanay Livy's Store. Your balance is ${amount}, due on ${dueDate}. Please settle as soon as possible. Thank you!`;
+               
+               // Use standard SMS protocol for maximum reliability and privacy
+               const smsUrl = `sms:${phone}?body=${encodeURIComponent(message)}`;
+               
+               // Direct redirection to messaging app
+               window.location.href = smsUrl;
+           });
 
           sendBtn.addEventListener('click', function() {
               const email = emailInput.value;

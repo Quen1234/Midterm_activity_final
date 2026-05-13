@@ -267,12 +267,18 @@
                         </div>
 
                         <div class="mb-3">
-                            <input type="email" id="dueCustomerEmail" class="form-control form-control-sm border-0 text-white rounded-3 shadow-none py-2 px-3" placeholder="customer@email.com" style="background: rgba(255, 255, 255, 0.08); font-size: 0.8rem;">
+                            <input type="email" id="dueCustomerEmail" class="form-control form-control-sm border-0 text-white rounded-3 shadow-none py-2 px-3 mb-2" placeholder="customer@email.com" style="background: rgba(255, 255, 255, 0.08); font-size: 0.8rem;">
+                            <input type="text" id="dueCustomerPhone" class="form-control form-control-sm border-0 text-white rounded-3 shadow-none py-2 px-3" placeholder="09123456789" style="background: rgba(255, 255, 255, 0.08); font-size: 0.8rem;">
                         </div>
 
-                        <button type="button" id="sendDueNoticeBtn" class="btn btn-primary btn-sm w-100 rounded-3 fw-bold py-2 shadow-lg border-0 transition-all" style="background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%); font-size: 0.85rem;">
-                            <i class="bi bi-send-fill me-2"></i>Send Notice
-                        </button>
+                        <div class="d-grid gap-2">
+                            <button type="button" id="sendDueNoticeBtn" class="btn btn-primary btn-sm rounded-3 fw-bold py-2 shadow-lg border-0 transition-all" style="background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%); font-size: 0.85rem;">
+                                <i class="bi bi-send-fill me-2"></i>Email Notice
+                            </button>
+                            <button type="button" id="sendDueSmsBtn" class="btn btn-success btn-sm rounded-3 fw-bold py-2 shadow-lg border-0 transition-all" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); font-size: 0.85rem;">
+                                <i class="bi bi-chat-dots-fill me-2"></i>SMS Reminder
+                            </button>
+                        </div>
                         <div id="emailStatusMsg" class="mt-2 small text-center" style="display:none;"></div>
                     </div>
                 </div>

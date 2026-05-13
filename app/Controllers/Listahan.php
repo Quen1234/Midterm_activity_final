@@ -36,6 +36,19 @@ class Listahan extends BaseController
             $forge->addColumn('listahan', $fields);
         }
 
+        if (!$db->fieldExists('phone_number', 'listahan')) {
+            $forge = \Config\Database::forge();
+            $fields = [
+                'phone_number' => [
+                    'type' => 'VARCHAR',
+                    'constraint' => 20,
+                    'null' => true,
+                    'after' => 'email'
+                ],
+            ];
+            $forge->addColumn('listahan', $fields);
+        }
+
         $model = new ListahanModel();
         $data['listahan'] = $model->orderBy('created_at', 'DESC')->findAll();
         $data['title'] = 'Digital Listahan';
@@ -59,6 +72,7 @@ class Listahan extends BaseController
         $model->save([
             'customer_name' => $customerName,
             'email'         => $this->request->getPost('email'),
+            'phone_number'  => $this->request->getPost('phone_number'),
             'items'         => $this->request->getPost('items'),
             'amount'        => $amount,
             'due_date'      => $dueDate,
