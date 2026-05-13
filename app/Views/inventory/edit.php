@@ -77,13 +77,7 @@
                 <?= csrf_field() ?>
                 
                 <div class="row g-4">
-                    <div class="col-md-4">
-                        <div class="input-group-custom">
-                            <label><i class="fas fa-barcode me-1"></i> Barcode</label>
-                            <input type="text" name="barcode" class="form-control" value="<?= esc($item['barcode']) ?>" placeholder="Scan or type barcode...">
-                        </div>
-                    </div>
-                    <div class="col-md-8">
+                    <div class="col-md-12">
                         <div class="input-group-custom">
                             <label><i class="fas fa-tag me-1"></i> Product Label / Item Name</label>
                             <input type="text" name="item_name" class="form-control" value="<?= esc($item['item_name']) ?>" placeholder="e.g. Coca-Cola 1.5L" required>

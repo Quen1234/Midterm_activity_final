@@ -26,7 +26,6 @@ class Inventory extends BaseController
         $logModel = new ActivityLogModel();
 
         $data = [
-            'barcode'   => $this->request->getPost('barcode'),
             'item_name' => $this->request->getPost('item_name'),
             'category'  => $this->request->getPost('category'),
             'price'     => $this->request->getPost('price'),
@@ -69,7 +68,6 @@ class Inventory extends BaseController
         $logModel = new ActivityLogModel();
         
         $data = [
-            'barcode'   => $this->request->getPost('barcode'),
             'item_name' => $this->request->getPost('item_name'),
             'category'  => $this->request->getPost('category'),
             'price'     => $this->request->getPost('price'),

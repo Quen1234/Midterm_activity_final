@@ -312,8 +312,18 @@
                             <td class="ps-4">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="avatar-init"><?= strtoupper(substr($item['customer_name'], 0, 1)) ?></div>
-                                    <div>
-                                        <span class="fw-semibold text-dark"><?= esc($item['customer_name']) ?></span>
+                                    <div class="d-flex flex-column">
+                                        <span class="fw-bold text-dark fs-6"><?= esc($item['customer_name']) ?></span>
+                                        <?php if(!empty($item['email'])): ?>
+                                            <small class="text-primary" style="font-size: 0.75rem;">
+                                                <i class="bi bi-envelope-at me-1"></i><?= esc($item['email']) ?>
+                                            </small>
+                                        <?php endif; ?>
+                                        <?php if(!empty($item['phone_number'])): ?>
+                                            <small class="text-muted" style="font-size: 0.75rem;">
+                                                <i class="bi bi-phone me-1"></i><?= esc($item['phone_number']) ?>
+                                            </small>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </td>
@@ -731,7 +741,7 @@ document.getElementById('confirmSettleBtn').addEventListener('click', function()
           // Populate customers from the table
           const rows = document.querySelectorAll('.debt-row');
           rows.forEach(row => {
-              const name = row.querySelector('.fw-semibold').innerText;
+              const name = row.querySelector('.fw-bold.text-dark.fs-6').innerText;
               const amount = row.querySelector('.badge-amount').innerText;
               const dueDate = row.querySelector('.small.fw-semibold').innerText;
               const settleBtn = row.querySelector('.settle-btn');

@@ -88,12 +88,11 @@
                     
                     $percent = min(100, ($item['stock'] / 50) * 100); // Assuming 50 is a "full" stock
                 ?>
-                <div class="col-xl-3 col-lg-4 col-md-6 stock-item" data-name="<?= strtolower($item['item_name']) ?>" data-barcode="<?= $item['barcode'] ?>">
+                <div class="col-xl-3 col-lg-4 col-md-6 stock-item" data-name="<?= strtolower($item['item_name']) ?>">
                     <div class="stock-card p-4 h-100">
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <div class="bg-light rounded-3 p-3 text-center" style="min-width: 60px;">
-                                <i class="fas fa-box fa-2x text-primary d-block mb-1"></i>
-                                <small class="text-muted fw-bold" style="font-size: 0.6rem;"><?= $item['barcode'] ?: 'NO BARCODE' ?></small>
+                                <i class="fas fa-box fa-2x text-primary d-block"></i>
                             </div>
                             <span class="stock-badge <?= $stockClass ?>">
                                 <?= $item['stock'] ?> Left
