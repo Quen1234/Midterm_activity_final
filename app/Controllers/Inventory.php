@@ -80,4 +80,35 @@ class Inventory extends BaseController
         $logModel->log('Inventory Update', "Updated product details for: {$data['item_name']}");
         return redirect()->to('/inventory')->with('status', 'Item updated successfully!');
     }
+
+    public function exportCsv()
+    {
+        $model = new InventoryModel();
+        $inventory = $model->findAll();
+
+        $filename = 'inventory_export_' . date('Ymd') . '.csv';
+
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+
+        $output = fopen('php://output', 'w');
+        
+        // CSV Header
+        fputcsv($output, ['ID', 'Item Name', 'Category', 'Price', 'Stock', 'Created At']);
+
+        // CSV Rows
+        foreach ($inventory as $item) {
+            fputcsv($output, [
+                $item['id'],
+                $item['item_name'],
+                $item['category'],
+                $item['price'],
+                $item['stock'],
+                $item['created_at']
+            ]);
+        }
+
+        fclose($output);
+        exit;
+    }
 }

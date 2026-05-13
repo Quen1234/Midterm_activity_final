@@ -117,6 +117,55 @@
 
     /* Breadcrumb color */
     .breadcrumb-item.active { color: var(--primary-indigo); font-weight: 600; }
+
+    /* Print Styling */
+    @media print {
+        .sidebar, .top-navbar, .inventory-toolbar, .breadcrumb, .btn, .btn-circle, footer {
+            display: none !important;
+        }
+        body {
+            background: white !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+        .main-wrapper {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        .page-content {
+            padding: 0 !important;
+        }
+        .inventory-card {
+            box-shadow: none !important;
+            border: none !important;
+        }
+        .table-clean thead th {
+            background-color: #eee !important;
+            color: black !important;
+            border-bottom: 2px solid #333 !important;
+        }
+        .table-clean tbody td {
+            border-bottom: 1px solid #eee !important;
+        }
+        .stock-container .progress {
+            display: none !important;
+        }
+        .inventory-card::before {
+            content: "NANAY LIVY'S STORE - INVENTORY LIST";
+            display: block;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .inventory-card::after {
+            content: "Printed on: " attr(data-date);
+            display: block;
+            text-align: right;
+            font-size: 0.8rem;
+            margin-top: 20px;
+        }
+    }
 </style>
 <?= $this->endSection() ?>
 
@@ -156,17 +205,17 @@
                 </select>
             </div>
             <div class="col-md-5 text-md-end">
-                <button class="btn btn-link text-muted text-decoration-none fw-bold small me-3">
+                <a href="<?= base_url('inventory/export-csv') ?>" class="btn btn-link text-muted text-decoration-none fw-bold small me-3">
                     <i class="fas fa-file-export me-1"></i> Export CSV
-                </button>
-                <button class="btn btn-link text-muted text-decoration-none fw-bold small">
+                </a>
+                <button onclick="window.print()" class="btn btn-link text-muted text-decoration-none fw-bold small">
                     <i class="fas fa-print me-1"></i> Print List
                 </button>
             </div>
         </div>
     </div>
 
-    <div class="inventory-card">
+    <div class="inventory-card" data-date="<?= date('M d, Y') ?>">
         <div class="table-responsive">
             <table class="table table-clean mb-0" id="inventoryTable">
                 <thead>

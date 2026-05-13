@@ -49,6 +49,7 @@ $routes->get('listahan/delete/(:num)', 'Listahan::delete/$1');
 $routes->post('listahan/send-notice', 'Listahan::sendNotice');
 $routes->get('inventory', 'Inventory::index');
 $routes->get('inventory/add', 'Inventory::add');
+$routes->get('inventory/export-csv', 'Inventory::exportCsv');
 $routes->get('inventory/edit/(:num)', 'Inventory::edit/$1'); // Added edit route
 $routes->post('inventory/store', 'Inventory::store');
 $routes->post('inventory/update/(:num)', 'Inventory::update/$1'); // Added update route
