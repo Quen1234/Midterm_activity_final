@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 12, 2026 at 08:20 PM
+-- Generation Time: May 13, 2026 at 05:40 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -45,7 +45,35 @@ INSERT INTO `activity_logs` (`id`, `user_id`, `username`, `action`, `details`, `
 (1, 4, 'admin0', 'Debt Settled', 'Full payment received from Lisa Gajo via gcash', '::1', '2026-05-12 18:09:38'),
 (2, 4, 'admin0', 'Debt Partial Payment', 'Received ₱15 from Li. Remaining: ₱15', '::1', '2026-05-12 18:12:35'),
 (3, 4, 'admin0', 'POS Transaction', 'Sold items to Lisa Gajo via UTANG (Total: ₱30.00)', '::1', '2026-05-12 18:17:33'),
-(4, 4, 'admin0', 'Inventory Update', 'Updated product details for: colgate', '::1', '2026-05-12 18:17:59');
+(4, 4, 'admin0', 'Inventory Update', 'Updated product details for: colgate', '::1', '2026-05-12 18:17:59'),
+(5, 4, 'admin0', 'Login', 'User successfully logged into the system', '::1', '2026-05-12 23:38:30'),
+(6, 4, 'admin0', 'Email Notice Sent', 'Sent payment reminder to Chazely Lopez (chazelymaelopez@gmail.com)', '::1', '2026-05-12 23:46:53'),
+(7, 4, 'admin0', 'Listahan Add', 'Added new credit record for Jaspher Magbo-o (₱500)', '::1', '2026-05-12 23:49:12'),
+(8, 4, 'admin0', 'Listahan Add', 'Added new credit record for Lourd Ian Rentino (₱100)', '::1', '2026-05-12 23:50:00'),
+(9, 4, 'admin0', 'Listahan Add', 'Added new credit record for Jayca Hermosura (₱60)', '::1', '2026-05-12 23:52:46'),
+(10, 4, 'admin0', 'Email Notice Sent', 'Sent payment reminder to Jayca Hermosura (hermosurajayca420@gmail.com)', '::1', '2026-05-12 23:53:20'),
+(11, 4, 'admin0', 'Email Notice Sent', 'Sent payment reminder to Lourd Ian Rentino (lourdianrentinoakol@gmail.com)', '::1', '2026-05-12 23:55:47'),
+(12, 4, 'admin0', 'Debt Settled', 'Full payment received from Li via gcash', '::1', '2026-05-13 08:02:25'),
+(13, 4, 'admin0', 'Email Notice Sent', 'Sent payment reminder to Jaspher Magbo-o (lordmiloy@gmail.com)', '::1', '2026-05-13 08:40:48'),
+(14, 4, 'admin0', 'Listahan Add', 'Added new credit record for Jayven gajo (₱20)', '::1', '2026-05-13 08:56:45'),
+(15, 4, 'admin0', 'Debt Settled', 'Full payment received from Jayven gajo via gcash', '::1', '2026-05-13 08:59:21'),
+(16, 4, 'admin0', 'Login', 'User successfully logged into the system', '::1', '2026-05-13 17:52:15'),
+(17, 4, 'admin0', 'Email Notice Sent', 'Sent payment reminder to Jayven Gajo (javyenkim@gmail.com)', '::1', '2026-05-13 17:56:28'),
+(18, 4, 'admin0', 'Login', 'User successfully logged into the system', '::1', '2026-05-13 23:15:28'),
+(19, 4, 'admin0', 'Listahan Add', 'Added new credit record for Jayven gajo (₱20)', '::1', '2026-05-13 23:24:10'),
+(20, 4, 'admin0', 'Debt Settled', 'Full payment received from Nyve Gajo via cash', '::1', '2026-05-13 23:24:24'),
+(21, 4, 'admin0', 'Debt Settled', 'Full payment received from Justin Gariando via cash', '::1', '2026-05-13 23:24:32'),
+(22, 4, 'admin0', 'Debt Settled', 'Full payment received from Chazely Lopez via cash', '::1', '2026-05-13 23:24:35'),
+(23, 4, 'admin0', 'Debt Settled', 'Full payment received from Josev Kiervin Gajo via gcash', '::1', '2026-05-13 23:24:42'),
+(24, 4, 'admin0', 'Debt Settled', 'Full payment received from Jayca Hermosura via gcash', '::1', '2026-05-13 23:24:47'),
+(25, 4, 'admin0', 'Debt Settled', 'Full payment received from Lourd Ian Rentino via cash', '::1', '2026-05-13 23:24:54'),
+(26, 4, 'admin0', 'Debt Settled', 'Full payment received from Lisa Gajo via gcash', '::1', '2026-05-13 23:25:04'),
+(27, 4, 'admin0', 'Debt Settled', 'Full payment received from Jaspher Magbo-o via gcash', '::1', '2026-05-13 23:25:09'),
+(28, 4, 'admin0', 'Debt Settled', 'Full payment received from Jayven Gajo via gcash', '::1', '2026-05-13 23:25:14'),
+(29, 4, 'admin0', 'Debt Settled', 'Full payment received from Jayven gajo via gcash', '::1', '2026-05-13 23:25:17'),
+(30, 4, 'admin0', 'Listahan Add', 'Added new credit record for Jayven Kim Gajo (₱70)', '::1', '2026-05-13 23:25:45'),
+(31, 4, 'admin0', 'Listahan Add', 'Added new credit record for Joy Mae Pearl Hambre (₱500)', '::1', '2026-05-13 23:28:05'),
+(32, 4, 'admin0', 'Email Notice Sent', 'Sent payment reminder to Joy Mae Pearl Hambre (hjoymaepearl@gmail.com)', '::1', '2026-05-13 23:28:40');
 
 -- --------------------------------------------------------
 
@@ -101,6 +129,7 @@ CREATE TABLE `listahan` (
   `id` int(11) NOT NULL,
   `customer_name` varchar(255) NOT NULL,
   `email` varchar(255) DEFAULT NULL,
+  `phone_number` varchar(20) DEFAULT NULL,
   `items` text DEFAULT NULL,
   `amount` decimal(10,2) NOT NULL,
   `due_date` date DEFAULT NULL,
@@ -113,14 +142,9 @@ CREATE TABLE `listahan` (
 -- Dumping data for table `listahan`
 --
 
-INSERT INTO `listahan` (`id`, `customer_name`, `email`, `items`, `amount`, `due_date`, `status`, `created_at`, `updated_at`) VALUES
-(2, 'Justin Gariando', NULL, 'water', 20.00, NULL, 'unpaid', '2026-04-16 14:56:13', '2026-04-16 14:56:13'),
-(6, 'Chazely Lopez', NULL, 'coke 1litter', 45.00, NULL, 'unpaid', '2026-05-12 23:27:33', '2026-05-12 23:27:33'),
-(7, 'Josev Kiervin Gajo', NULL, 'coffee', 30.00, '2026-05-30', 'unpaid', '2026-05-13 00:08:05', '2026-05-13 00:08:05'),
-(9, 'Jayven Gajo', 'javyenkim@gmail.com', 'coke', 50.00, '2026-05-31', 'unpaid', '2026-05-13 00:40:50', '2026-05-13 00:40:50'),
-(10, 'Nyve Gajo', 'nayeoungi@gmail.com', 'tinapa', 20.00, '2026-05-31', 'unpaid', '2026-05-13 00:52:59', '2026-05-13 00:52:59'),
-(12, 'Li', NULL, '1x colgate, 1x Camel', 15.00, NULL, 'unpaid', '2026-05-13 02:10:22', '2026-05-13 02:12:35'),
-(13, 'Lisa Gajo', NULL, '1x Camel, 1x colgate', 30.00, NULL, 'unpaid', '2026-05-13 02:17:33', '2026-05-13 02:17:33');
+INSERT INTO `listahan` (`id`, `customer_name`, `email`, `phone_number`, `items`, `amount`, `due_date`, `status`, `created_at`, `updated_at`) VALUES
+(19, 'Jayven Kim Gajo', 'javyenkim@gmail.com', '09196531256', 'Coke 1litter', 70.00, '2026-05-30', 'unpaid', '2026-05-13 23:25:45', '2026-05-13 23:25:45'),
+(20, 'Joy Mae Pearl Hambre', 'hjoymaepearl@gmail.com', '09919510217', 'RedHorse', 500.00, '2026-06-01', 'unpaid', '2026-05-13 23:28:05', '2026-05-13 23:28:05');
 
 -- --------------------------------------------------------
 
@@ -177,7 +201,19 @@ INSERT INTO `transactions` (`id`, `customer_name`, `payment_method`, `total_amou
 (8, 'Li', 'utang', 30.00, 30.00, '[{\"id\":3,\"name\":\"colgate\",\"qty\":1,\"price\":20},{\"id\":4,\"name\":\"Camel\",\"qty\":1,\"price\":10}]', '2026-05-13 02:10:22'),
 (9, 'Lisa Gajo', 'cash', 20.00, 20.00, '[{\"id\":4,\"name\":\"Camel\",\"qty\":2,\"price\":10}]', '2026-05-13 02:10:45'),
 (10, 'Li', 'partial', 30.00, 15.00, '[{\"name\":\"Partial Debt Settlement: 1x colgate, 1x Camel\",\"qty\":1,\"price\":15}]', '2026-05-13 02:12:35'),
-(11, 'Lisa Gajo', 'utang', 30.00, 30.00, '[{\"id\":4,\"name\":\"Camel\",\"qty\":1,\"price\":10},{\"id\":3,\"name\":\"colgate\",\"qty\":1,\"price\":20}]', '2026-05-13 02:17:33');
+(11, 'Lisa Gajo', 'utang', 30.00, 30.00, '[{\"id\":4,\"name\":\"Camel\",\"qty\":1,\"price\":10},{\"id\":3,\"name\":\"colgate\",\"qty\":1,\"price\":20}]', '2026-05-13 02:17:33'),
+(12, 'Li', 'gcash', 15.00, 15.00, '[{\"name\":\"Debt Settlement: 1x colgate, 1x Camel\",\"qty\":1,\"price\":15}]', '2026-05-13 08:02:25'),
+(13, 'Jayven gajo', 'gcash', 20.00, 20.00, '[{\"name\":\"Debt Settlement: kape\",\"qty\":1,\"price\":20}]', '2026-05-13 08:59:21'),
+(14, 'Nyve Gajo', 'cash', 20.00, 20.00, '[{\"name\":\"Debt Settlement: tinapa\",\"qty\":1,\"price\":20}]', '2026-05-13 23:24:24'),
+(15, 'Justin Gariando', 'cash', 20.00, 20.00, '[{\"name\":\"Debt Settlement: water\",\"qty\":1,\"price\":20}]', '2026-05-13 23:24:31'),
+(16, 'Chazely Lopez', 'cash', 45.00, 45.00, '[{\"name\":\"Debt Settlement: coke 1litter\",\"qty\":1,\"price\":45}]', '2026-05-13 23:24:35'),
+(17, 'Josev Kiervin Gajo', 'gcash', 30.00, 30.00, '[{\"name\":\"Debt Settlement: coffee\",\"qty\":1,\"price\":30}]', '2026-05-13 23:24:42'),
+(18, 'Jayca Hermosura', 'gcash', 60.00, 60.00, '[{\"name\":\"Debt Settlement: corned beef\",\"qty\":1,\"price\":60}]', '2026-05-13 23:24:47'),
+(19, 'Lourd Ian Rentino', 'cash', 100.00, 100.00, '[{\"name\":\"Debt Settlement: coffee\",\"qty\":1,\"price\":100}]', '2026-05-13 23:24:54'),
+(20, 'Lisa Gajo', 'gcash', 30.00, 30.00, '[{\"name\":\"Debt Settlement: 1x Camel, 1x colgate\",\"qty\":1,\"price\":30}]', '2026-05-13 23:25:04'),
+(21, 'Jaspher Magbo-o', 'gcash', 500.00, 500.00, '[{\"name\":\"Debt Settlement: 2kg rice\",\"qty\":1,\"price\":500}]', '2026-05-13 23:25:09'),
+(22, 'Jayven Gajo', 'gcash', 50.00, 50.00, '[{\"name\":\"Debt Settlement: coke\",\"qty\":1,\"price\":50}]', '2026-05-13 23:25:14'),
+(23, 'Jayven gajo', 'gcash', 20.00, 20.00, '[{\"name\":\"Debt Settlement: cofee\\r\\n\",\"qty\":1,\"price\":20}]', '2026-05-13 23:25:17');
 
 -- --------------------------------------------------------
 
@@ -249,7 +285,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `activity_logs`
 --
 ALTER TABLE `activity_logs`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `inventory`
@@ -261,7 +297,7 @@ ALTER TABLE `inventory`
 -- AUTO_INCREMENT for table `listahan`
 --
 ALTER TABLE `listahan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -273,7 +309,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `users`
