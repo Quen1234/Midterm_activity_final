@@ -619,41 +619,91 @@
     }
     @media print {
         @page {
+            size: 74mm auto;
             margin: 0;
-            size: auto;
         }
-        body {
-            visibility: hidden;
-            background: white !important;
-        }
-        #printableReceipt {
-            visibility: visible;
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 100%;
-            margin: 0;
-            padding: 20px;
-            background: white !important;
-        }
-        #printableReceipt * {
-            visibility: visible;
-        }
-        .modal-footer, .btn-close, .modal-header, .btn {
+        
+        /* Hide all UI elements */
+        .sidebar, .top-navbar, footer, .modal-backdrop, .btn, .alert, .nav-header, .sidebar-brand, 
+        [id^="debug-icon"], [id^="debug-bar"], .debug-bar {
             display: none !important;
         }
-        .modal {
-            position: absolute;
-            left: 0;
-            top: 0;
-            margin: 0;
-            padding: 0;
-            width: 100%;
+
+        /* Reset main containers to be transparent/white and sized for 1/8 A4 */
+        html, body, .main-wrapper, .page-content {
+            margin: 0 !important;
+            padding: 0 !important;
+            background: white !important;
+            width: 74mm !important;
+            height: auto !important;
+            min-height: auto !important;
+            display: block !important;
+            overflow: visible !important;
         }
-        .modal-content {
+
+        /* Hide all other page content except the active modal */
+        .page-content > *:not(#receiptModal) {
+            display: none !important;
+        }
+
+        /* Receipt Modal Printing - Force it to show exactly like the on-screen receipt */
+        #receiptModal {
+            display: block !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 74mm !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            border: none !important;
+            background: white !important;
+        }
+
+        .modal-dialog, .modal-content, .modal-body {
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 74mm !important;
             border: none !important;
             box-shadow: none !important;
+            background: white !important;
+            display: block !important;
         }
+
+        .modal-header, .modal-footer, .btn-close {
+            display: none !important;
+        }
+
+        #printableReceipt {
+            display: block !important;
+            width: 74mm !important;
+            padding: 5mm !important;
+            box-sizing: border-box !important;
+            background: white !important;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
+        }
+
+        /* Match specific styles from the receipt for accuracy */
+        #printableReceipt * {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        
+        .text-danger { color: #dc3545 !important; }
+        .text-success { color: #198754 !important; }
+        .text-primary { color: #0d6efd !important; }
+        .fw-bold { font-weight: bold !important; }
+        .border-top { border-top: 1px solid #dee2e6 !important; }
+        .border-dashed { border-top: 1px dashed #dee2e6 !important; }
+        
+        /* Ensure logo/header looks identical */
+        h5 { 
+            font-size: 1.1rem !important; 
+            margin-bottom: 0.25rem !important;
+            text-align: center !important;
+        }
+        .small { font-size: 0.85rem !important; }
     }
 </style>
 

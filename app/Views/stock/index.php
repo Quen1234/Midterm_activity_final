@@ -90,26 +90,26 @@
                 ?>
                 <div class="col-xl-3 col-lg-4 col-md-6 stock-item" data-name="<?= strtolower($item['item_name']) ?>">
                     <div class="stock-card p-4 h-100">
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div class="bg-light rounded-3 p-3 text-center" style="min-width: 60px;">
+                        <div class="d-flex align-items-center gap-3 mb-4">
+                            <div class="bg-light rounded-3 p-3 text-center flex-shrink-0" style="width: 64px; height: 64px; display: flex; align-items: center; justify-content: center;">
                                 <?php 
                                     $catName = strtolower($item['category'] ?? '');
                                     $iconClass = $categoryIcons[$catName] ?? 'fas fa-box';
                                 ?>
-                                <i class="<?= esc($iconClass) ?> fa-2x text-primary d-block"></i>
+                                <i class="<?= esc($iconClass) ?> fa-2x text-primary"></i>
                             </div>
-                            <span class="stock-badge <?= $stockClass ?>">
-                                <?= $item['stock'] ?> Left
-                            </span>
+                            <div class="overflow-hidden">
+                                <h5 class="fw-bold mb-1 text-dark text-truncate"><?= $item['item_name'] ?></h5>
+                                <span class="badge bg-light text-muted rounded-pill px-2" style="font-size: 0.7rem;"><?= $item['category'] ?></span>
+                            </div>
                         </div>
-                        
-                        <h5 class="fw-bold text-dark mb-1"><?= $item['item_name'] ?></h5>
-                        <p class="text-muted small mb-3"><?= $item['category'] ?></p>
-                        
+
                         <div class="mt-auto">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
                                 <span class="text-muted small">Stock Level</span>
-                                <span class="fw-bold small"><?= round($percent) ?>%</span>
+                                <span class="stock-badge <?= $stockClass ?>">
+                                    <?= $item['stock'] ?> Left
+                                </span>
                             </div>
                             <div class="progress progress-thin">
                                 <div class="progress-bar <?= $item['stock'] <= 5 ? 'bg-danger' : ($item['stock'] <= 15 ? 'bg-warning' : 'bg-success') ?>" 

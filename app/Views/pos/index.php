@@ -247,18 +247,22 @@
                         <?php foreach($products as $product): ?>
                             <div class="col-xl-4 col-md-6 product-item" data-name="<?= strtolower($product['item_name']) ?>" data-barcode="<?= $product['barcode'] ?>">
                                 <div class="card h-100 product-card rounded-4" onclick="addToCart(<?= $product['id'] ?>, '<?= addslashes($product['item_name']) ?>', <?= $product['price'] ?>)">
-                                    <div class="card-body p-4 text-center">
-                                        <div class="icon-box mx-auto">
-                                            <?php 
-                                                $catName = strtolower($product['category'] ?? '');
-                                                $iconClass = $categoryIcons[$catName] ?? 'fas fa-box';
-                                            ?>
-                                            <i class="<?= esc($iconClass) ?>"></i>
+                                    <div class="card-body p-4">
+                                        <div class="d-flex align-items-center gap-3 mb-3">
+                                            <div class="icon-box mb-0 flex-shrink-0">
+                                                <?php 
+                                                    $catName = strtolower($product['category'] ?? '');
+                                                    $iconClass = $categoryIcons[$catName] ?? 'fas fa-box';
+                                                ?>
+                                                <i class="<?= esc($iconClass) ?>"></i>
+                                            </div>
+                                            <div class="text-start overflow-hidden">
+                                                <h5 class="fw-bold mb-1 text-dark text-truncate"><?= $product['item_name'] ?></h5>
+                                                <span class="badge bg-light text-muted rounded-pill px-3"><?= $product['category'] ?></span>
+                                            </div>
                                         </div>
-                                        <h5 class="fw-bold mb-1 text-dark"><?= $product['item_name'] ?></h5>
-                                        <span class="badge bg-light text-muted mb-3 rounded-pill px-3"><?= $product['category'] ?></span>
                                         
-                                        <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                                        <div class="d-flex justify-content-between align-items-center pt-3 border-top">
                                             <div class="text-start">
                                                 <small class="text-muted d-block">Price</small>
                                                 <span class="h5 fw-bold text-primary mb-0">₱<?= number_format($product['price'], 2) ?></span>
@@ -474,41 +478,91 @@
     }
     @media print {
         @page {
+            size: 74mm auto;
             margin: 0;
-            size: auto;
         }
-        body {
-            visibility: hidden;
-            background: white !important;
-        }
-        #printableReceipt {
-            visibility: visible;
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 100%;
-            margin: 0;
-            padding: 20px;
-            background: white !important;
-        }
-        #printableReceipt * {
-            visibility: visible;
-        }
-        .modal-footer, .btn-close, .modal-header, .btn {
+        
+        /* Hide all UI elements */
+        .sidebar, .top-navbar, footer, .modal-backdrop, .btn, .alert, .nav-header, .sidebar-brand, 
+        [id^="debug-icon"], [id^="debug-bar"], .debug-bar {
             display: none !important;
         }
-        .modal {
-            position: absolute;
-            left: 0;
-            top: 0;
-            margin: 0;
-            padding: 0;
-            width: 100%;
+
+        /* Reset main containers to be transparent/white and sized for 1/8 A4 */
+        html, body, .main-wrapper, .page-content {
+            margin: 0 !important;
+            padding: 0 !important;
+            background: white !important;
+            width: 74mm !important;
+            height: auto !important;
+            min-height: auto !important;
+            display: block !important;
+            overflow: visible !important;
         }
-        .modal-content {
+
+        /* Hide all other page content except the active modal */
+        .page-content > *:not(#receiptModal) {
+            display: none !important;
+        }
+
+        /* Receipt Modal Printing - Force it to show exactly like the on-screen receipt */
+        #receiptModal {
+            display: block !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 74mm !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            border: none !important;
+            background: white !important;
+        }
+
+        .modal-dialog, .modal-content, .modal-body {
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 74mm !important;
             border: none !important;
             box-shadow: none !important;
+            background: white !important;
+            display: block !important;
         }
+
+        .modal-header, .modal-footer, .btn-close {
+            display: none !important;
+        }
+
+        #printableReceipt {
+            display: block !important;
+            width: 74mm !important;
+            padding: 5mm !important;
+            box-sizing: border-box !important;
+            background: white !important;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
+        }
+
+        /* Match specific styles from the receipt for accuracy */
+        #printableReceipt * {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        
+        .text-danger { color: #dc3545 !important; }
+        .text-success { color: #198754 !important; }
+        .text-primary { color: #0d6efd !important; }
+        .fw-bold { font-weight: bold !important; }
+        .border-top { border-top: 1px solid #dee2e6 !important; }
+        .border-dashed { border-top: 1px dashed #dee2e6 !important; }
+        
+        /* Ensure logo/header looks identical */
+        h5 { 
+            font-size: 1.1rem !important; 
+            margin-bottom: 0.25rem !important;
+            text-align: center !important;
+        }
+        .small { font-size: 0.85rem !important; }
     }
 </style>
 
