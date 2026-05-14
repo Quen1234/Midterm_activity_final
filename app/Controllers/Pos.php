@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\InventoryModel;
+use App\Models\CategoryModel;
 use App\Models\ListahanModel;
 use App\Models\TransactionModel;
 use App\Models\ActivityLogModel;
@@ -11,11 +12,36 @@ class Pos extends BaseController
 {
     public function index()
     {
+        $db = \Config\Database::connect();
+        if (!$db->fieldExists('icon', 'categories')) {
+            $forge = \Config\Database::forge();
+            $fields = [
+                'icon' => [
+                    'type' => 'VARCHAR',
+                    'constraint' => 50,
+                    'default' => 'fas fa-box',
+                    'after' => 'name'
+                ],
+            ];
+            $forge->addColumn('categories', $fields);
+        }
+
         $inventoryModel = new InventoryModel();
+        $categoryModel = new CategoryModel();
+        
+        $products = $inventoryModel->findAll();
+        $categories = $categoryModel->findAll();
+        
+        // Map category name to icon for easy lookup in view
+        $categoryIcons = [];
+        foreach ($categories as $cat) {
+            $categoryIcons[strtolower($cat['name'])] = $cat['icon'] ?? 'fas fa-box';
+        }
         
         $data = [
             'title' => 'Point of Sale',
-            'products' => $inventoryModel->findAll()
+            'products' => $products,
+            'categoryIcons' => $categoryIcons
         ];
         
         return view('pos/index', $data);

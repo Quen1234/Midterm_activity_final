@@ -89,10 +89,16 @@
                             <label><i class="fas fa-layer-group me-1"></i> Category</label>
                             <input type="text" name="category" list="categoryOptions" class="form-control" placeholder="Select or Type..." required>
                             <datalist id="categoryOptions">
-                                <option value="Beverages">
-                                <option value="Snacks">
-                                <option value="Canned Goods">
-                                <option value="Essentials">
+                                <?php if(!empty($categories)): ?>
+                                    <?php foreach($categories as $cat): ?>
+                                        <option value="<?= esc($cat['name']) ?>">
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <option value="Beverages">
+                                    <option value="Snacks">
+                                    <option value="Canned Goods">
+                                    <option value="Essentials">
+                                <?php endif; ?>
                             </datalist>
                         </div>
                     </div>

@@ -199,9 +199,15 @@
             <div class="col-md-3">
                 <select id="categoryFilter" class="form-select border-0 bg-light fw-medium" style="border-radius: 12px; padding: 0.7rem;">
                     <option value="">All Categories</option>
-                    <option>Beverages</option>
-                    <option>Snacks</option>
-                    <option>Canned Goods</option>
+                    <?php if(!empty($categories)): ?>
+                        <?php foreach($categories as $cat): ?>
+                            <option><?= esc($cat['name']) ?></option>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <option>Beverages</option>
+                        <option>Snacks</option>
+                        <option>Canned Goods</option>
+                    <?php endif; ?>
                 </select>
             </div>
             <div class="col-md-5 text-md-end">
@@ -238,7 +244,11 @@
                             <td>
                                 <div class="d-flex align-items-center">
                                     <div class="bg-soft-blue rounded-3 d-flex align-items-center justify-content-center me-3 shadow-sm" style="width: 48px; height: 48px; background: #eff6ff;">
-                                        <i class="fas fa-box text-primary"></i>
+                                        <?php 
+                                            $catName = strtolower($item['category'] ?? '');
+                                            $iconClass = $categoryIcons[$catName] ?? 'fas fa-box';
+                                        ?>
+                                        <i class="<?= esc($iconClass) ?> text-primary"></i>
                                     </div>
                                     <div>
                                         <span class="fw-bold text-dark d-block fs-6"><?= $item['item_name'] ?></span>

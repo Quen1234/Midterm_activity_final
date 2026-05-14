@@ -23,6 +23,7 @@
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Icon</th>
                             <th>Category Name</th>
                             <th>Created At</th>
                             <th>Actions</th>
@@ -33,12 +34,14 @@
                             <?php foreach ($categories as $category): ?>
                                 <tr>
                                     <td><?= $category['id'] ?></td>
+                                    <td><i class="<?= esc($category['icon'] ?? 'fas fa-box') ?> fa-lg text-primary"></i></td>
                                     <td><?= esc($category['name']) ?></td>
                                     <td><?= date('M d, Y h:i A', strtotime($category['created_at'])) ?></td>
                                     <td>
                                         <button class="btn btn-sm btn-info text-white edit-btn" 
                                                 data-id="<?= $category['id'] ?>" 
                                                 data-name="<?= esc($category['name']) ?>"
+                                                data-icon="<?= esc($category['icon'] ?? 'fas fa-box') ?>"
                                                 data-bs-toggle="modal" data-bs-target="#editCategoryModal">
                                             <i class="fas fa-edit"></i> Edit
                                         </button>
@@ -77,6 +80,25 @@
                     <label for="categoryName" class="form-label">Category Name</label>
                     <input type="text" class="form-control" id="categoryName" name="name" required>
                 </div>
+                <div class="mb-3">
+                    <label for="categoryIcon" class="form-label">Category Icon (FontAwesome Class)</label>
+                    <select class="form-select" id="categoryIcon" name="icon">
+                        <option value="fas fa-box">Default Box</option>
+                        <option value="fas fa-utensils">Food / Snacks</option>
+                        <option value="fas fa-coffee">Beverages</option>
+                        <option value="fas fa-bottle-water">Drinks</option>
+                        <option value="fas fa-soap">Hygiene / Soap</option>
+                        <option value="fas fa-medkit">Medicine</option>
+                        <option value="fas fa-apple-whole">Fruits</option>
+                        <option value="fas fa-carrot">Vegetables</option>
+                        <option value="fas fa-egg">Dairy / Eggs</option>
+                        <option value="fas fa-candy-cane">Sweets</option>
+                        <option value="fas fa-broom">Cleaning</option>
+                        <option value="fas fa-shirt">Clothing</option>
+                        <option value="fas fa-spray-can">Beauty Products</option>
+                    </select>
+                    <small class="text-muted">Choose an icon that best represents this category.</small>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -100,6 +122,24 @@
                 <div class="mb-3">
                     <label for="editCategoryName" class="form-label">Category Name</label>
                     <input type="text" class="form-control" id="editCategoryName" name="name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="editCategoryIcon" class="form-label">Category Icon (FontAwesome Class)</label>
+                    <select class="form-select" id="editCategoryIcon" name="icon">
+                        <option value="fas fa-box">Default Box</option>
+                        <option value="fas fa-utensils">Food / Snacks</option>
+                        <option value="fas fa-coffee">Beverages</option>
+                        <option value="fas fa-bottle-water">Drinks</option>
+                        <option value="fas fa-soap">Hygiene / Soap</option>
+                        <option value="fas fa-medkit">Medicine</option>
+                        <option value="fas fa-apple-whole">Fruits</option>
+                        <option value="fas fa-carrot">Vegetables</option>
+                        <option value="fas fa-egg">Dairy / Eggs</option>
+                        <option value="fas fa-candy-cane">Sweets</option>
+                        <option value="fas fa-broom">Cleaning</option>
+                        <option value="fas fa-shirt">Clothing</option>
+                        <option value="fas fa-spray-can">Beauty Products</option>
+                    </select>
                 </div>
             </div>
             <div class="modal-footer">
@@ -138,10 +178,12 @@
             button.addEventListener('click', function () {
                 const id = this.dataset.id;
                 const name = this.dataset.name;
+                const icon = this.dataset.icon;
                 
                 const form = document.getElementById('editCategoryForm');
                 form.action = `/categories/update/${id}`;
                 document.getElementById('editCategoryName').value = name;
+                document.getElementById('editCategoryIcon').value = icon;
             });
         });
 

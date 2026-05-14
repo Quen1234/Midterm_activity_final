@@ -1,14 +1,26 @@
 <?php namespace App\Controllers;
 
 use App\Models\InventoryModel;
+use App\Models\CategoryModel;
 
 class Stock extends BaseController {
     public function index() {
         $model = new InventoryModel();
+        $categoryModel = new CategoryModel();
+        
+        $inventory = $model->findAll();
+        $categories = $categoryModel->findAll();
+        
+        // Map category name to icon
+        $categoryIcons = [];
+        foreach ($categories as $cat) {
+            $categoryIcons[strtolower($cat['name'])] = $cat['icon'];
+        }
         
         $data = [
             'title' => 'Stock Management',
-            'inventory' => $model->findAll()
+            'inventory' => $inventory,
+            'categoryIcons' => $categoryIcons
         ];
         
         return view('stock/index', $data);

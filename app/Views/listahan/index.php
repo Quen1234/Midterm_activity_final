@@ -100,6 +100,25 @@
         box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.15); 
         outline: none;
     }
+
+    /* Vibration Animation for Overdue */
+    @keyframes vibrate {
+        0% { transform: translate(0); }
+        20% { transform: translate(-1px, 1px); }
+        40% { transform: translate(-1px, -1px); }
+        60% { transform: translate(1px, 1px); }
+        80% { transform: translate(1px, -1px); }
+        100% { transform: translate(0); }
+    }
+
+    .row-overdue {
+        background-color: rgba(247, 37, 133, 0.05) !important;
+        animation: vibrate 0.2s linear infinite;
+    }
+    
+    .row-overdue:hover {
+        background-color: rgba(247, 37, 133, 0.08) !important;
+    }
     
     /* Button Pill */
     .btn-pill { 
@@ -308,7 +327,12 @@
                 <tbody id="tableBody">
                     <?php if(!empty($listahan) && is_array($listahan)): ?>
                         <?php foreach ($listahan as $item): ?>
-                        <tr class="debt-row">
+                        <?php 
+                            $dueDateStr = $item['due_date'] ?? date('Y-m-d', strtotime("+7 days", strtotime($item['created_at'])));
+                            $dueDate = strtotime($dueDateStr);
+                            $isOverdue = time() > $dueDate;
+                        ?>
+                        <tr class="debt-row <?= $isOverdue ? 'row-overdue' : '' ?>">
                             <td class="ps-4">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="avatar-init"><?= strtoupper(substr($item['customer_name'], 0, 1)) ?></div>
@@ -332,11 +356,6 @@
                                 <span class="badge-amount">₱ <?= number_format($item['amount'], 2) ?></span>
                             </td>
                             <td>
-                                <?php 
-                                    $dueDateStr = $item['due_date'] ?? date('Y-m-d', strtotime("+7 days", strtotime($item['created_at'])));
-                                    $dueDate = strtotime($dueDateStr);
-                                    $isOverdue = time() > $dueDate;
-                                ?>
                                 <div class="d-flex flex-column">
                                     <span class="small fw-semibold <?= $isOverdue ? 'text-danger' : 'text-dark' ?>">
                                         <?= date('M d, Y', $dueDate) ?>
@@ -369,7 +388,10 @@
                                             data-name="<?= esc($item['customer_name']) ?>"
                                             data-email="<?= esc($item['email'] ?? '') ?>"
                                             data-phone="<?= esc($item['phone_number'] ?? '') ?>"
-                                            data-amount="<?= $item['amount'] ?>">
+                                            data-amount="<?= $item['amount'] ?>"
+                                            data-items="<?= esc($item['items'] ?? '') ?>"
+                                            data-due="<?= $item['due_date'] ?? date('Y-m-d', strtotime('+7 days', strtotime($item['created_at']))) ?>"
+                                            data-date="<?= date('M d, Y h:i A', strtotime($item['created_at'])) ?>">
                                         <i class="bi bi-check2-circle me-1"></i> Settle
                                     </button>
                                 </div>
@@ -511,6 +533,15 @@
                     </div>
                     <small class="text-muted mt-1 d-block">Current Debt: <span id="currentDebtDisplay" class="fw-bold">₱0.00</span></small>
                 </div>
+
+                <div class="text-start mb-2">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="printAfterSettle">
+                        <label class="form-check-label small fw-bold text-muted" for="printAfterSettle">
+                            <i class="bi bi-printer me-1"></i> Print Receipt after settlement
+                        </label>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer border-0 justify-content-center pb-4">
                 <button type="button" class="btn btn-light btn-pill px-4" data-bs-dismiss="modal">Cancel</button>
@@ -552,11 +583,15 @@
                         </div>
                         <div class="d-flex justify-content-between mt-1">
                             <span>Status:</span>
-                            <span class="fw-bold text-danger">UNPAID (UTANG)</span>
+                            <span class="fw-bold" id="receiptStatus">UNPAID (UTANG)</span>
                         </div>
                         <div class="d-flex justify-content-between mt-1">
                             <span>Due Date:</span>
                             <span class="fw-bold text-dark" id="receiptDueDate"></span>
+                        </div>
+                        <div id="receiptRemainingRow" class="d-flex justify-content-between mt-1 text-danger" style="display: none !important;">
+                            <span>Remaining Balance:</span>
+                            <span class="fw-bold" id="receiptRemaining">₱0.00</span>
                         </div>
                     </div>
 
@@ -645,6 +680,12 @@ document.querySelectorAll('.view-receipt-btn').forEach(btn => {
         document.getElementById('receiptCustomerName').innerText = name;
         document.getElementById('receiptTotal').innerText = '₱' + parseFloat(amount).toLocaleString(undefined, {minimumFractionDigits: 2});
         document.getElementById('receiptDate').innerText = date;
+        
+        const statusEl = document.getElementById('receiptStatus');
+        statusEl.innerText = 'UNPAID (UTANG)';
+        statusEl.className = 'fw-bold text-danger';
+
+        document.getElementById('receiptRemainingRow').setAttribute('style', 'display: none !important;');
 
         // Use stored due date for receipt
         const dueDateObj = new Date(dueDateStr);
@@ -674,6 +715,7 @@ document.querySelectorAll('.view-receipt-btn').forEach(btn => {
 // Settlement confirmation
 let settleId = null;
 let currentDebt = 0;
+let settleData = {};
 
 function togglePartialInput() {
     const isPartial = document.getElementById('settlePartial').checked;
@@ -686,12 +728,23 @@ document.querySelectorAll('.settle-btn').forEach(btn => {
         let name = this.getAttribute('data-name');
         currentDebt = parseFloat(this.getAttribute('data-amount'));
         
+        // Store all data for potential printing
+        settleData = {
+            id: settleId,
+            name: name,
+            amount: currentDebt,
+            items: this.getAttribute('data-items'),
+            due: this.getAttribute('data-due'),
+            date: this.getAttribute('data-date')
+        };
+        
         document.getElementById('settleCustomerName').innerText = name;
         document.getElementById('currentDebtDisplay').innerText = '₱' + currentDebt.toLocaleString(undefined, {minimumFractionDigits: 2});
         document.getElementById('settleAmount').value = '';
         
         // Reset radio buttons
         document.getElementById('settleCash').checked = true;
+        document.getElementById('printAfterSettle').checked = false;
         togglePartialInput();
         
         new bootstrap.Modal(document.getElementById('settleModal')).show();
@@ -702,7 +755,9 @@ document.getElementById('confirmSettleBtn').addEventListener('click', function()
     if (!settleId) return;
     
     const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+    const shouldPrint = document.getElementById('printAfterSettle').checked;
     let url = `/listahan/settle/${settleId}?method=${paymentMethod}`;
+    let finalAmount = currentDebt;
     
     if (paymentMethod === 'partial') {
         const amountToPay = parseFloat(document.getElementById('settleAmount').value);
@@ -715,9 +770,60 @@ document.getElementById('confirmSettleBtn').addEventListener('click', function()
             return;
         }
         url += `&amount=${amountToPay}`;
+        finalAmount = amountToPay;
     }
     
-    window.location.href = url;
+    if (shouldPrint) {
+        // Populate receipt modal
+        document.getElementById('receiptCustomerName').innerText = settleData.name;
+        document.getElementById('receiptTotal').innerText = '₱' + finalAmount.toLocaleString(undefined, {minimumFractionDigits: 2});
+        document.getElementById('receiptDate').innerText = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true });
+        
+        const statusEl = document.getElementById('receiptStatus');
+        const remainingRow = document.getElementById('receiptRemainingRow');
+        
+        if (paymentMethod === 'partial') {
+            statusEl.innerText = 'PARTIAL PAYMENT';
+            statusEl.className = 'fw-bold text-success';
+            remainingRow.setAttribute('style', 'display: flex !important;');
+            document.getElementById('receiptRemaining').innerText = '₱' + (currentDebt - finalAmount).toLocaleString(undefined, {minimumFractionDigits: 2});
+        } else {
+            statusEl.innerText = 'PAID (SETTLED)';
+            statusEl.className = 'fw-bold text-success';
+            remainingRow.setAttribute('style', 'display: none !important;');
+        }
+
+        const dueDateObj = new Date(settleData.due);
+        const dueDateFormatted = dueDateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        document.getElementById('receiptDueDate').innerText = dueDateFormatted;
+
+        const itemsContainer = document.getElementById('receiptItems');
+        itemsContainer.innerHTML = '';
+        
+        const itemsList = (paymentMethod === 'partial' ? 'Partial Settlement: ' : 'Full Settlement: ') + (settleData.items || 'General Items');
+        const div = document.createElement('div');
+        div.className = 'd-flex justify-content-between mb-1 small';
+        div.innerHTML = `<span>${itemsList}</span>`;
+        itemsContainer.appendChild(div);
+
+        // Hide settle modal and show receipt modal
+        bootstrap.Modal.getInstance(document.getElementById('settleModal')).hide();
+        const rModal = new bootstrap.Modal(document.getElementById('receiptModal'));
+        rModal.show();
+
+        // Trigger print after modal is shown
+        document.getElementById('receiptModal').addEventListener('shown.bs.modal', function onShown() {
+            window.print();
+            this.removeEventListener('shown.bs.modal', onShown);
+            
+            // Redirect after a delay to allow print dialog to appear
+            setTimeout(() => {
+                window.location.href = url;
+            }, 1000);
+        });
+    } else {
+        window.location.href = url;
+    }
 });
 
 // Auto-dismiss alerts

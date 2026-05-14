@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\InventoryModel;
+use App\Models\CategoryModel;
 use App\Models\ActivityLogModel;
 
 class Inventory extends BaseController
@@ -10,14 +11,31 @@ class Inventory extends BaseController
     public function index()
     {
         $model = new InventoryModel();
-        $data['inventory'] = $model->findAll();
+        $categoryModel = new CategoryModel();
+        
+        $inventory = $model->findAll();
+        $categories = $categoryModel->findAll();
+
+        // Map category name to icon
+        $categoryIcons = [];
+        foreach ($categories as $cat) {
+            $categoryIcons[strtolower($cat['name'])] = $cat['icon'];
+        }
+        
+        $data = [
+            'inventory' => $inventory,
+            'categories' => $categories,
+            'categoryIcons' => $categoryIcons
+        ];
         
         return view('inventory/index', $data);
     }
 
     public function add()
     {
-        return view('inventory/add');
+        $categoryModel = new CategoryModel();
+        $data['categories'] = $categoryModel->findAll();
+        return view('inventory/add', $data);
     }
 
     public function store()
@@ -53,7 +71,10 @@ class Inventory extends BaseController
     public function edit($id)
     {
         $model = new InventoryModel();
+        $categoryModel = new CategoryModel();
+        
         $data['item'] = $model->find($id);
+        $data['categories'] = $categoryModel->findAll();
         
         if (!$data['item']) {
             return redirect()->to('/inventory')->with('error', 'Item not found!');

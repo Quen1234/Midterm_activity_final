@@ -10,6 +10,7 @@ use CodeIgniter\Router\RouteCollection;
 // Authentication (Login/Register/Logout) Routes
 // ==========================================
 $routes->get('/', 'Auth::login');                           // Shows the login page
+$routes->get('/login', 'Auth::login');                       // Also shows the login page
 $routes->post('/auth/process', 'Auth::process');             // Handles login form submission
 $routes->get('/logout', 'Auth::logout');                     // Logs the user out
 

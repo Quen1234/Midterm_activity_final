@@ -92,7 +92,11 @@
                     <div class="stock-card p-4 h-100">
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <div class="bg-light rounded-3 p-3 text-center" style="min-width: 60px;">
-                                <i class="fas fa-box fa-2x text-primary d-block"></i>
+                                <?php 
+                                    $catName = strtolower($item['category'] ?? '');
+                                    $iconClass = $categoryIcons[$catName] ?? 'fas fa-box';
+                                ?>
+                                <i class="<?= esc($iconClass) ?> fa-2x text-primary d-block"></i>
                             </div>
                             <span class="stock-badge <?= $stockClass ?>">
                                 <?= $item['stock'] ?> Left

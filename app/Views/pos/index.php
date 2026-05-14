@@ -249,7 +249,11 @@
                                 <div class="card h-100 product-card rounded-4" onclick="addToCart(<?= $product['id'] ?>, '<?= addslashes($product['item_name']) ?>', <?= $product['price'] ?>)">
                                     <div class="card-body p-4 text-center">
                                         <div class="icon-box mx-auto">
-                                            <i class="fas fa-box"></i>
+                                            <?php 
+                                                $catName = strtolower($product['category'] ?? '');
+                                                $iconClass = $categoryIcons[$catName] ?? 'fas fa-box';
+                                            ?>
+                                            <i class="<?= esc($iconClass) ?>"></i>
                                         </div>
                                         <h5 class="fw-bold mb-1 text-dark"><?= $product['item_name'] ?></h5>
                                         <span class="badge bg-light text-muted mb-3 rounded-pill px-3"><?= $product['category'] ?></span>
@@ -385,6 +389,25 @@
                     <div class="input-group">
                         <span class="input-group-text bg-light border-0">₱</span>
                         <input type="number" class="form-control border-start-0" id="amountPaid" placeholder="0.00" step="0.01">
+                    </div>
+                </div>
+
+                <div id="cashPaymentSection" class="mb-4">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="amountTendered" class="form-label fw-bold">Amount Tendered</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0">₱</span>
+                                <input type="number" class="form-control border-start-0" id="amountTendered" placeholder="0.00" step="0.01" oninput="calculateChange()">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Change</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0">₱</span>
+                                <input type="text" class="form-control border-start-0 bg-white" id="changeAmount" placeholder="0.00" readonly>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -604,10 +627,33 @@
     function togglePartialInput() {
         const method = document.querySelector('input[name="paymentMethod"]:checked').value;
         const partialSection = document.getElementById('partialPaymentSection');
+        const cashSection = document.getElementById('cashPaymentSection');
+        
         if (method === 'partial') {
             partialSection.style.display = 'block';
+            cashSection.style.display = 'none';
+        } else if (method === 'cash') {
+            partialSection.style.display = 'none';
+            cashSection.style.display = 'block';
+            calculateChange();
         } else {
             partialSection.style.display = 'none';
+            cashSection.style.display = 'none';
+        }
+    }
+
+    function calculateChange() {
+        const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        const tendered = parseFloat(document.getElementById('amountTendered').value) || 0;
+        const change = tendered - total;
+        
+        const changeInput = document.getElementById('changeAmount');
+        if (tendered > 0) {
+            changeInput.value = change >= 0 ? change.toFixed(2) : 'Insufficient';
+            changeInput.classList.toggle('text-danger', change < 0);
+        } else {
+            changeInput.value = '0.00';
+            changeInput.classList.remove('text-danger');
         }
     }
 
@@ -627,12 +673,22 @@
             return;
         }
 
+        if (paymentMethod === 'cash') {
+            const tendered = parseFloat(document.getElementById('amountTendered').value) || 0;
+            if (tendered < total) {
+                alert('Amount tendered is insufficient.');
+                return;
+            }
+        }
+
         // Prepare data for backend
         const checkoutData = {
             customer_name: customerName || 'Guest',
             payment_method: paymentMethod,
             amount_paid: amountPaid || total,
             total_amount: total,
+            amount_tendered: paymentMethod === 'cash' ? document.getElementById('amountTendered').value : null,
+            change_amount: paymentMethod === 'cash' ? document.getElementById('changeAmount').value : null,
             items: cart.map(item => ({
                 id: item.id,
                 name: item.name,
@@ -690,6 +746,11 @@
         if (data.payment_method === 'partial') {
             detailsHtml += `<div class="d-flex justify-content-between"><span>Paid:</span><span class="fw-bold">₱${parseFloat(data.amount_paid).toFixed(2)}</span></div>`;
             detailsHtml += `<div class="d-flex justify-content-between"><span>Balance:</span><span class="fw-bold text-danger">₱${(data.total_amount - data.amount_paid).toFixed(2)}</span></div>`;
+        } else if (data.payment_method === 'cash') {
+            if (data.amount_tendered) {
+                detailsHtml += `<div class="d-flex justify-content-between"><span>Tendered:</span><span class="fw-bold">₱${parseFloat(data.amount_tendered).toFixed(2)}</span></div>`;
+                detailsHtml += `<div class="d-flex justify-content-between"><span>Change:</span><span class="fw-bold">₱${parseFloat(data.change_amount).toFixed(2)}</span></div>`;
+            }
         } else if (data.payment_method === 'utang') {
             detailsHtml += `<div class="d-flex justify-content-between"><span>Status:</span><span class="fw-bold text-danger">UNPAID</span></div>`;
         }
