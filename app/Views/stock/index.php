@@ -60,6 +60,37 @@
         width: 100%;
         font-weight: 500;
     }
+
+    .btn-outline-danger:hover {
+        background-color: #fee2e2;
+        border-color: #ef4444;
+        color: #ef4444;
+    }
+
+    /* Marquee Animation for long text */
+    .moving-text-container {
+        overflow: hidden;
+        white-space: nowrap;
+        width: 100%;
+    }
+
+    .moving-text-container:hover .moving-text {
+        display: inline-block;
+        animation: marquee-scroll 8s linear infinite;
+        text-overflow: clip;
+        overflow: visible;
+        width: auto;
+    }
+
+    @keyframes marquee-scroll {
+        0% { transform: translateX(0); }
+        50% { transform: translateX(-20%); }
+        100% { transform: translateX(0); }
+    }
+
+    .text-truncate {
+        max-width: 150px;
+    }
 </style>
 <?= $this->endSection() ?>
 
@@ -98,9 +129,13 @@
                                 ?>
                                 <i class="<?= esc($iconClass) ?> fa-2x text-primary"></i>
                             </div>
-                            <div class="overflow-hidden">
-                                <h5 class="fw-bold mb-1 text-dark text-truncate"><?= $item['item_name'] ?></h5>
-                                <span class="badge bg-light text-muted rounded-pill px-2" style="font-size: 0.7rem;"><?= $item['category'] ?></span>
+                            <div class="overflow-hidden flex-grow-1">
+                                <div class="moving-text-container">
+                                    <h5 class="fw-bold mb-1 text-dark text-truncate moving-text"><?= $item['item_name'] ?></h5>
+                                </div>
+                                <div class="moving-text-container">
+                                    <span class="badge bg-light text-muted rounded-pill px-2 moving-text" style="font-size: 0.7rem;"><?= $item['category'] ?></span>
+                                </div>
                             </div>
                         </div>
 

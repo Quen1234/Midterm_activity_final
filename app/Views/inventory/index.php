@@ -115,6 +115,27 @@
     .btn-edit:hover { background: #4361ee; color: white; border-color: #4361ee; }
     .btn-delete:hover { background: #ef4444; color: white; border-color: #ef4444; }
 
+    /* Marquee Animation for long text */
+    .moving-text-container {
+        overflow: hidden;
+        white-space: nowrap;
+        max-width: 180px;
+    }
+
+    .moving-text-container:hover .moving-text {
+        display: inline-block;
+        animation: marquee-scroll 8s linear infinite;
+        text-overflow: clip;
+        overflow: visible;
+        width: auto;
+    }
+
+    @keyframes marquee-scroll {
+        0% { transform: translateX(0); }
+        50% { transform: translateX(-20%); }
+        100% { transform: translateX(0); }
+    }
+
     /* Breadcrumb color */
     .breadcrumb-item.active { color: var(--primary-indigo); font-weight: 600; }
 
@@ -250,16 +271,20 @@
                                         ?>
                                         <i class="<?= esc($iconClass) ?> text-primary"></i>
                                     </div>
-                                    <div>
-                                        <span class="fw-bold text-dark d-block fs-6"><?= $item['item_name'] ?></span>
+                                    <div class="d-flex flex-column flex-grow-1 overflow-hidden">
+                                        <div class="moving-text-container">
+                                            <span class="fw-bold text-dark d-block fs-6 moving-text"><?= $item['item_name'] ?></span>
+                                        </div>
                                         <small class="text-muted"><i class="far fa-clock me-1"></i>Updated <?= date('M d, Y') ?></small>
                                     </div>
                                 </div>
                             </td>
                             <td>
-                                <span class="badge bg-light text-primary border-0 px-3 py-2 fw-bold" style="border-radius: 8px; font-size: 0.75rem; letter-spacing: 0.3px;">
-                                    <?= strtoupper($item['category']) ?>
-                                </span>
+                                <div class="moving-text-container">
+                                    <span class="badge bg-light text-primary border-0 px-3 py-2 fw-bold moving-text" style="border-radius: 8px; font-size: 0.75rem; letter-spacing: 0.3px; display: inline-block;">
+                                        <?= strtoupper($item['category']) ?>
+                                    </span>
+                                </div>
                             </td>
                             <td>
                                 <span class="fw-bold text-dark fs-6">₱<?= number_format($item['price'], 2) ?></span>

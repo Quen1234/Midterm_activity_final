@@ -198,6 +198,31 @@
         box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
     }
 
+    /* Marquee Animation for long text */
+    .moving-text-container {
+        overflow: hidden;
+        white-space: nowrap;
+        width: 100%;
+    }
+
+    .moving-text-container:hover .moving-text {
+        display: inline-block;
+        animation: marquee-scroll 8s linear infinite;
+        text-overflow: clip;
+        overflow: visible;
+        width: auto;
+    }
+
+    @keyframes marquee-scroll {
+        0% { transform: translateX(0); }
+        50% { transform: translateX(-20%); } /* Gentle scroll */
+        100% { transform: translateX(0); }
+    }
+
+    .text-truncate {
+        max-width: 150px;
+    }
+
     /* Badge Stock */
     .stock-badge {
         padding: 5px 12px;
@@ -256,9 +281,13 @@
                                                 ?>
                                                 <i class="<?= esc($iconClass) ?>"></i>
                                             </div>
-                                            <div class="text-start overflow-hidden">
-                                                <h5 class="fw-bold mb-1 text-dark text-truncate"><?= $product['item_name'] ?></h5>
-                                                <span class="badge bg-light text-muted rounded-pill px-3"><?= $product['category'] ?></span>
+                                            <div class="text-start overflow-hidden flex-grow-1">
+                                                <div class="moving-text-container">
+                                                    <h5 class="fw-bold mb-1 text-dark text-truncate moving-text"><?= $product['item_name'] ?></h5>
+                                                </div>
+                                                <div class="moving-text-container">
+                                                    <span class="badge bg-light text-muted rounded-pill px-3 moving-text"><?= $product['category'] ?></span>
+                                                </div>
                                             </div>
                                         </div>
                                         
