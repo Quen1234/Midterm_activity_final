@@ -488,6 +488,15 @@
                             <?php endif; ?>
                         </select>
                     </div>
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="saveToInventory">
+                            <label class="form-check-label fw-bold text-muted small text-uppercase" for="saveToInventory">
+                                <i class="fas fa-save me-1"></i> Save to Inventory Permanently
+                            </label>
+                        </div>
+                        <small class="text-muted">If enabled, this item will be added to your inventory for future use.</small>
+                    </div>
                 </div>
                 <div class="modal-footer border-0 p-4 pt-0">
                     <button type="button" class="btn btn-light rounded-pill px-4 fw-bold" data-bs-dismiss="modal">Cancel</button>
@@ -669,6 +678,7 @@
         const name = document.getElementById('customItemName').value.trim();
         const price = parseFloat(document.getElementById('customItemPrice').value);
         const category = document.getElementById('customItemCategory').value;
+        const saveToInventory = document.getElementById('saveToInventory').checked;
 
         if (!name) {
             alert('Please enter an item name.');
@@ -681,16 +691,19 @@
 
         // Use a unique negative timestamp as ID for custom items
         const id = -Math.floor(Date.now());
-        addToCart(id, name, price, category);
+        addToCart(id, name, price, category, saveToInventory);
         getCustomItemModal().hide();
+        
+        // Reset checkbox for next use
+        document.getElementById('saveToInventory').checked = false;
     }
 
-    function addToCart(id, name, price, category = '') {
+    function addToCart(id, name, price, category = '', saveToInventory = false) {
         const existingItem = cart.find(item => item.id === id);
         if (existingItem) {
             existingItem.qty += 1;
         } else {
-            cart.push({ id, name, price, qty: 1, category });
+            cart.push({ id, name, price, qty: 1, category, saveToInventory });
         }
         renderCart();
         
@@ -857,7 +870,9 @@
                 id: item.id,
                 name: item.name,
                 qty: item.qty,
-                price: item.price
+                price: item.price,
+                category: item.category || '',
+                saveToInventory: item.saveToInventory || false
             }))
         };
 

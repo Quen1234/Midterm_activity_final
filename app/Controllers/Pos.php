@@ -63,16 +63,28 @@ class Pos extends BaseController
         
         $db->transStart();
 
-        // 1. Update Inventory Stock
+        // 1. Update Inventory Stock & Handle Permanent Custom Items
         foreach ($json->items as $item) {
-            $product = $inventoryModel->find($item->id);
-            if ($product) {
-                $newStock = $product['stock'] - $item->qty;
-                if ($newStock < 0) {
-                    $db->transRollback();
-                    return $this->response->setJSON(['status' => 'error', 'message' => 'Insufficient stock for ' . $item->name]);
+            if ($item->id > 0) {
+                // Regular inventory item
+                $product = $inventoryModel->find($item->id);
+                if ($product) {
+                    $newStock = $product['stock'] - $item->qty;
+                    if ($newStock < 0) {
+                        $db->transRollback();
+                        return $this->response->setJSON(['status' => 'error', 'message' => 'Insufficient stock for ' . $item->name]);
+                    }
+                    $inventoryModel->update($item->id, ['stock' => $newStock]);
                 }
-                $inventoryModel->update($item->id, ['stock' => $newStock]);
+            } else if (isset($item->saveToInventory) && $item->saveToInventory) {
+                // Permanent custom item - Save to inventory
+                $inventoryModel->save([
+                    'item_name' => $item->name,
+                    'category'  => $item->category ?? 'Uncategorized',
+                    'price'     => $item->price,
+                    'stock'     => 0, // It starts with 0 stock unless we want to assume initial stock
+                    'barcode'   => ''
+                ]);
             }
         }
 
