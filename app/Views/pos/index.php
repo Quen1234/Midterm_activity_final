@@ -257,13 +257,18 @@
         <!-- Products Section -->
         <div class="col-lg-8">
             <div class="card border-0 shadow-sm rounded-4 mb-4" style="background: transparent;">
-                <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
                     <h4 class="mb-0 fw-bold text-dark">
                         <i class="fas fa-shopping-bag me-2 text-primary"></i>Marketplace
                     </h4>
-                    <div class="search-wrapper w-50">
-                        <i class="fas fa-search search-icon"></i>
-                        <input type="text" id="productSearch" class="form-control bg-white border-0" placeholder="Search products by name...">
+                    <div class="d-flex align-items-center gap-3 flex-grow-1 justify-content-end">
+                        <div class="search-wrapper flex-grow-1" style="max-width: 400px;">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" id="productSearch" class="form-control bg-white border-0" placeholder="Search products...">
+                        </div>
+                        <button class="btn btn-primary rounded-4 px-4 py-2 fw-bold shadow-sm" onclick="showCustomItemModal()">
+                            <i class="fas fa-plus-circle me-2"></i>Custom Item
+                        </button>
                     </div>
                 </div>
 
@@ -452,7 +457,49 @@
     </div>
 </div>
 
-<!-- Receipt Modal -->
+<!-- Custom Item Modal -->
+    <div class="modal fade" id="customItemModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-0 pb-0 ps-4">
+                    <h5 class="modal-title fw-bold text-dark">Add Custom Item</h5>
+                    <button type="button" class="btn-close me-2" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label for="customItemName" class="form-label fw-bold text-muted small text-uppercase">Item Name</label>
+                        <input type="text" class="form-control rounded-3 border-light bg-light" id="customItemName" placeholder="Enter item name...">
+                    </div>
+                    <div class="mb-3">
+                        <label for="customItemPrice" class="form-label fw-bold text-muted small text-uppercase">Price</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-light rounded-start-3">₱</span>
+                            <input type="number" class="form-control rounded-end-3 border-light bg-light" id="customItemPrice" placeholder="0.00" step="0.01">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="customItemCategory" class="form-label fw-bold text-muted small text-uppercase">Category</label>
+                        <select class="form-select rounded-3 border-light bg-light" id="customItemCategory">
+                            <option value="">Select Category (Optional)</option>
+                            <?php if(!empty($categories)): ?>
+                                <?php foreach($categories as $cat): ?>
+                                    <option value="<?= esc($cat['name']) ?>"><?= esc($cat['name']) ?></option>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 p-4 pt-0">
+                    <button type="button" class="btn btn-light rounded-pill px-4 fw-bold" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm" onclick="addCustomItem()">
+                        <i class="fas fa-plus-circle me-2"></i>Add to Order
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Receipt Modal -->
 <div class="modal fade" id="receiptModal" tabindex="-1" aria-labelledby="receiptModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
@@ -607,12 +654,43 @@
         return bootstrap.Modal.getOrCreateInstance(document.getElementById('receiptModal'));
     }
 
-    function addToCart(id, name, price) {
+    function getCustomItemModal() {
+        return bootstrap.Modal.getOrCreateInstance(document.getElementById('customItemModal'));
+    }
+
+    function showCustomItemModal() {
+        document.getElementById('customItemName').value = '';
+        document.getElementById('customItemPrice').value = '';
+        document.getElementById('customItemCategory').value = '';
+        getCustomItemModal().show();
+    }
+
+    function addCustomItem() {
+        const name = document.getElementById('customItemName').value.trim();
+        const price = parseFloat(document.getElementById('customItemPrice').value);
+        const category = document.getElementById('customItemCategory').value;
+
+        if (!name) {
+            alert('Please enter an item name.');
+            return;
+        }
+        if (isNaN(price) || price <= 0) {
+            alert('Please enter a valid price.');
+            return;
+        }
+
+        // Use a unique negative timestamp as ID for custom items
+        const id = -Math.floor(Date.now());
+        addToCart(id, name, price, category);
+        getCustomItemModal().hide();
+    }
+
+    function addToCart(id, name, price, category = '') {
         const existingItem = cart.find(item => item.id === id);
         if (existingItem) {
             existingItem.qty += 1;
         } else {
-            cart.push({ id, name, price, qty: 1 });
+            cart.push({ id, name, price, qty: 1, category });
         }
         renderCart();
         
@@ -679,7 +757,10 @@
             tr.innerHTML = `
                 <td class="ps-4 py-3">
                     <div class="fw-bold text-dark mb-0">${item.name}</div>
-                    <small class="text-primary fw-semibold">₱${item.price.toFixed(2)}</small>
+                    <div class="d-flex align-items-center gap-2">
+                        <small class="text-primary fw-semibold">₱${item.price.toFixed(2)}</small>
+                        ${item.category ? `<span class="badge bg-light text-muted rounded-pill border-0" style="font-size: 0.65rem;">${item.category}</span>` : ''}
+                    </div>
                 </td>
                 <td class="text-center">
                     <div class="qty-control shadow-sm">

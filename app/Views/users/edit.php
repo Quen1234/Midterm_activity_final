@@ -4,7 +4,7 @@
     <h2>Edit User</h2>
     <div class="card mt-3">
         <div class="card-body">
-            <form action="/users/update/<?= $user['id'] ?>" method="post">
+            <form action="<?= base_url('users/update/' . $user['id']) ?>" method="post">
                 <div class="mb-3">
                     <label>Username</label>
                     <input type="text" name="username" class="form-control" value="<?= $user['username'] ?>" required>

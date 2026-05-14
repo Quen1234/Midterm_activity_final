@@ -26,8 +26,8 @@ $routes->get('/pos', 'Pos::index');                          // Shows the POS pa
 $routes->post('/pos/checkout', 'Pos::checkout');           // Processes POS checkout
 $routes->get('/categories', 'Categories::index');            // Lists all categories
 $routes->post('/categories/store', 'Categories::store');        // Stores new category
-$routes->post('/categories/update/(:num)', 'Categories::update/$1'); // Updates category
-$routes->post('/categories/delete/(:num)', 'Categories::delete/$1'); // Deletes category
+$routes->put('/categories/update/(:num)', 'Categories::update/$1'); // Updates category
+$routes->delete('/categories/delete/(:num)', 'Categories::delete/$1'); // Deletes category
 
 $routes->get('/stock', 'Stock::index');                      // Placeholder
 $routes->post('/stock/update', 'Stock::update');            // Updates stock quantity

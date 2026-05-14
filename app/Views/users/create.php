@@ -4,7 +4,7 @@
     <h2>Add New User</h2>
     <div class="card mt-3">
         <div class="card-body">
-            <form action="/users/store" method="post">
+            <form action="<?= base_url('users/store') ?>" method="post">
                 <div class="mb-3">
                     <label>Username</label>
                     <input type="text" name="username" class="form-control" required>

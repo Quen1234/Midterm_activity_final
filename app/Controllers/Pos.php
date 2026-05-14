@@ -41,6 +41,7 @@ class Pos extends BaseController
         $data = [
             'title' => 'Point of Sale',
             'products' => $products,
+            'categories' => $categories,
             'categoryIcons' => $categoryIcons
         ];
         

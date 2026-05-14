@@ -69,7 +69,7 @@
 <!-- Add Category Modal -->
 <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form action="/categories/store" method="post" class="modal-content">
+        <form action="<?= base_url('categories/store') ?>" method="post" class="modal-content">
             <?= csrf_field() ?>
             <div class="modal-header">
                 <h5 class="modal-title" id="addCategoryModalLabel">Add New Category</h5>
@@ -181,7 +181,7 @@
                 const icon = this.dataset.icon;
                 
                 const form = document.getElementById('editCategoryForm');
-                form.action = `/categories/update/${id}`;
+                form.action = `<?= base_url('categories/update') ?>/${id}`;
                 document.getElementById('editCategoryName').value = name;
                 document.getElementById('editCategoryIcon').value = icon;
             });
@@ -194,7 +194,7 @@
                 const name = this.dataset.name;
                 
                 const form = document.getElementById('deleteCategoryForm');
-                form.action = `/categories/delete/${id}`;
+                form.action = `<?= base_url('categories/delete') ?>/${id}`;
                 document.getElementById('deleteCategoryName').textContent = name;
             });
         });

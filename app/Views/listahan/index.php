@@ -424,7 +424,7 @@
 <!-- Aesthetic Modal for Add Record -->
 <div class="modal fade" id="addModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-        <form action="/listahan/store" method="POST" class="modal-content border-0 shadow-lg">
+        <form action="<?= base_url('listahan/store') ?>" method="POST" class="modal-content border-0 shadow-lg">
             <?= csrf_field() ?>
             <div class="modal-header border-0 px-4 pt-4">
                 <div class="d-flex align-items-center gap-2">
