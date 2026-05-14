@@ -585,6 +585,10 @@
                             <span>Status:</span>
                             <span class="fw-bold" id="receiptStatus">UNPAID (UTANG)</span>
                         </div>
+                        <div id="receiptMethodRow" class="d-flex justify-content-between mt-1" style="display: none !important;">
+                            <span>Method:</span>
+                            <span class="fw-bold text-uppercase" id="receiptMethod"></span>
+                        </div>
                         <div class="d-flex justify-content-between mt-1">
                             <span>Due Date:</span>
                             <span class="fw-bold text-dark" id="receiptDueDate"></span>
@@ -831,7 +835,13 @@ document.getElementById('confirmSettleBtn').addEventListener('click', function()
         
         const statusEl = document.getElementById('receiptStatus');
         const remainingRow = document.getElementById('receiptRemainingRow');
+        const methodRow = document.getElementById('receiptMethodRow');
+        const methodEl = document.getElementById('receiptMethod');
         
+        // Show method row for settlements
+        methodRow.setAttribute('style', 'display: flex !important;');
+        methodEl.innerText = 'via ' + paymentMethod;
+
         if (paymentMethod === 'partial') {
             statusEl.innerText = 'PARTIAL PAYMENT';
             statusEl.className = 'fw-bold text-success';
