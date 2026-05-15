@@ -38,7 +38,7 @@ class Dashboard extends BaseController
 
         // Weekly Sales (Last 4 weeks)
         $weeklySales = $db->table('transactions')
-            ->select("YEARWEEK(created_at) as week, SUM(amount_paid) as total")
+            ->select("YEARWEEK(created_at) as week, MIN(DATE(created_at)) as start_date, SUM(amount_paid) as total")
             ->where('created_at >=', date('Y-m-d', strtotime('-4 weeks')))
             ->groupBy("week")
             ->orderBy("week", "ASC")

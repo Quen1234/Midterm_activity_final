@@ -253,7 +253,10 @@
     }
 
     function showWeekly() {
-        const labels = weeklyData.map(d => 'Week ' + d.week.toString().slice(-2));
+        const labels = weeklyData.map(d => {
+            const date = new Date(d.start_date);
+            return 'Week of ' + date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        });
         const data = weeklyData.map(d => d.total);
         initChart(labels, data, 'Weekly Sales');
         setActiveButton('btnWeekly');
